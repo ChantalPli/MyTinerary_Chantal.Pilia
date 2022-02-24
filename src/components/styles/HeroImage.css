@@ -1,0 +1,11 @@
+.hero-image {
+    background-position: center bottom;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    place-items: center center;
+    place-content: center center;
+    text-align: center;
+    font-size: 2rem;
+}
