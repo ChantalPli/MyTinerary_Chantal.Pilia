@@ -11,8 +11,7 @@ footer > section:nth-of-type(1) {
     display: grid;
     grid-template-columns: auto repeat(4, 56px);
     place-items: center center;
-    border-bottom: 1px solid dimgray;
-    
+    border-bottom: 1px solid dimgray;  
 }
 
 footer > section:nth-of-type(4) {
