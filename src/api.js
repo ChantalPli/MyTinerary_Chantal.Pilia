@@ -1,4 +1,6 @@
-const url = 'http://localhost:4001';
+const port = 4000;
+
+const url = 'http://localhost:' + port;
 
 function fetchCities() {
     return fetch(url + '/cities');

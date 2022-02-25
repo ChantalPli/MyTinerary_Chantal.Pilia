@@ -1,17 +1,45 @@
 const express = require('express');
 const cors = require('cors');
+// const mongoose = require('mongoose');
 const cities = require('./cities.json');
 
-const api = express();
+const port = 4000;
+const app = express();
 
-api.use(cors({
+// const express = require('express')
+// const PORT = 4000
+// const app = express()
+
+// require('dotenv').config()
+// require('./config/database')
+
+/////////////////////////////////////////
+
+// const cityScheme = new mongoose.Schema({
+//     name: String,
+//     description: String,
+//     image: String,
+// });
+
+// const City = new mongoose.model('cities', cityScheme);
+
+/////////////////////////////////////////
+
+// const cities = require('./cities.json');
+
+app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
-api.get('/cities', (request, response) => {
+app.get('/cities', /* async */(request, response) => {
+    // const cities = await City.find();
     response.send(cities);
 });
 
-api.use('/assets', express.static('./assets'));
+app.use('/images', express.static('./images'));
 
-api.listen(4001);
+/////////////////////////////////////////
+
+app.listen(port, () => console.log('Server started'));
+
+// app.listen(PORT, () => console.log('server ready on port ' + PORT))

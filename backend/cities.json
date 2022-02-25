@@ -2,61 +2,61 @@
     {
         "name": "Firenze",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/firenze1.jpg"
+        "image": "/images/firenze1.jpg"
     },
     {
         "name": "Perugia",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/perugia1.jpg"
+        "image": "/images/perugia1.jpg"
     },
     {
         "name": "Cagliari",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/cagliari2.jpg"
+        "image": "/images/cagliari2.jpg"
     },
     {
         "name": "Siena",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/siena1.jpg"
+        "image": "/images/siena1.jpg"
     },
     {
         "name": "Roma",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/roma1.jpg"
+        "image": "/images/roma1.jpg"
     },
     {
         "name": "Palermo",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/palermo1.jpg"
+        "image": "/images/palermo1.jpg"
     },
     {
         "name": "Teramo",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/teramo.jpg"
+        "image": "/images/teramo.jpg"
     },
     {
         "name": "Alberobello",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/alberobello.jpg"
+        "image": "/images/alberobello.jpg"
     },
     {
         "name": "Napoli",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/napoli1.jpg"
+        "image": "/images/napoli1.jpg"
     },
     {
         "name": "Venezia",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/venezia1.jpg"
+        "image": "/images/venezia1.jpg"
     },
     {
         "name": "Matera",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/matera.jpg"
+        "image": "/images/matera.jpg"
     },
     {
         "name": "Verona",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
-        "image": "/assets/verona.jpg"
+        "image": "/images/verona.jpg"
     }
 ]

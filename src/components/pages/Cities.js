@@ -21,8 +21,8 @@ const filterOptions = createFilterOptions({
 });
 
 export default function Cities() {
-    const [isLoaded, setIsLoaded] = useState(false);
     const [cities, setCities] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
         api.fetchCities().then(response => response.json()).then(data => {
             setCities(data);
@@ -31,7 +31,7 @@ export default function Cities() {
     });
     return (
         <>
-            <HeroImage image={api.url + "/assets/italy.jpg"}>
+            <HeroImage image={api.url + "/images/italy.jpg"}>
 
             </HeroImage>
             <Autocomplete
@@ -53,29 +53,29 @@ export default function Cities() {
             />
             <section className="cards-of-cities">
                 {!isLoaded ? (<h2>Loading...</h2>) :
-                cities.length == 0 ? (<h2>No cities</h2>) :
-                cities.map((city, index) =>
-                    <Card key={index} sx={{ maxWidth: 345 }}>
-                        <CardMedia
-                            component="img"
-                            height="200"
-                            image={api.url + city.image}
-                            alt={city.name}
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                {city.name}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {city.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                        </CardActions>
-                    </Card>
-                )}
+                    cities.length == 0 ? (<h2>No cities</h2>) :
+                        cities.map((city, index) =>
+                            <Card key={index} sx={{ maxWidth: 345 }}>
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={api.url + city.image}
+                                    alt={city.name}
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {city.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {city.description}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Button size="small">Share</Button>
+                                    <Button size="small">Learn More</Button>
+                                </CardActions>
+                            </Card>
+                        )}
             </section>
         </>
     )

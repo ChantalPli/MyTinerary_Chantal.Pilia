@@ -94,7 +94,7 @@ export default function CustomAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
+                            {pages.map(page => (
                                 <MenuItem key={page.route} onClick={handleCloseNavMenu}>
                                     <Link style={{ color: 'inherit', textDecoration: 'none' }} to={page.route}>
                                         <Typography textAlign="center">{page.label}</Typography>

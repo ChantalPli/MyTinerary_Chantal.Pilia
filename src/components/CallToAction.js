@@ -15,7 +15,7 @@ export default function CallToAction() {
                 <CardMedia
                     component="img"
                     height="180"
-                    image={api.url + "/assets/italy4.jpg"}
+                    image={api.url + "/images/italy4.jpg"}
                     alt="italy"
                 />
                 <CardContent>
