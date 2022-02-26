@@ -20,15 +20,21 @@ const filterOptions = createFilterOptions({
     trim: true,
 });
 
+// const [search, setSearch] = useState('');
+
 export default function Cities() {
-    const [cities, setCities] = useState([]);
+    const [search, setSearch] = useState('');
+    const [allCities, setAllCities] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
-        api.fetchCities().then(response => response.json()).then(data => {
-            setCities(data);
-            setIsLoaded(true);
+        api.obtainCities().then(response => {
+            if (response.data.success) {
+                setAllCities(response.data.content.cities);
+                setIsLoaded(true);
+            }
         });
     });
+    const cities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search));
     return (
         <>
             <HeroImage image={api.url + "/images/italy.jpg"}>
@@ -39,7 +45,7 @@ export default function Cities() {
                 disableClearable
                 filterOptions={filterOptions}
                 sx={{ margin: '16px auto', width: 300 }}
-                options={cities.map(city => city.name).sort()}
+                options={allCities.map(city => city.name).sort()}
                 renderInput={params => (
                     <TextField
                         {...params}
@@ -48,34 +54,38 @@ export default function Cities() {
                             ...params.InputProps,
                             type: 'search',
                         }}
+                        onChange={event => {
+                            setSearch(event.target.value.trim().toLowerCase())
+                        }}
                     />
                 )}
             />
             <section className="cards-of-cities">
-                {!isLoaded ? (<h2>Loading...</h2>) :
-                    cities.length == 0 ? (<h2>No cities</h2>) :
-                        cities.map((city, index) =>
-                            <Card key={index} sx={{ maxWidth: 345 }}>
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    image={api.url + city.image}
-                                    alt={city.name}
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        {city.name}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        {city.description}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Button size="small">Share</Button>
-                                    <Button size="small">Learn More</Button>
-                                </CardActions>
-                            </Card>
-                        )}
+                {
+                    !isLoaded ? (<h2>Loading...</h2>) :
+                        cities.length === 0 ? (<h2>No cities</h2>) :
+                            cities.map((city, index) =>
+                                <Card key={index} sx={{ maxWidth: 600 }}>
+                                    <CardMedia
+                                        component="img"
+                                        height="300"
+                                        image={api.url + city.image}
+                                        alt={city.name}
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            {city.name}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {city.description}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small">Share</Button>
+                                        <Button size="small">Learn More</Button>
+                                    </CardActions>
+                                </Card>
+                            )}
             </section>
         </>
     )

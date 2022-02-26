@@ -1,12 +1,12 @@
 [
     {
         "name": "Firenze",
-        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
+        "description": "One of the most charming cities in Tuscany – if not all of Italy – Florence is a place to immerse yourself in history, art and architecture. Dubbed the birthplace of the Renaissance, it’s home to works by Leonardo Da Vinci and Michelangelo at the world-famous Uffizi Gallery, plus beautiful attractions like the Ponte Vecchio and the Boboli Gardens",
         "image": "/images/firenze1.jpg"
     },
     {
         "name": "Perugia",
-        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
+        "description": "With its Etruscan walls, a gorgeous Medieval center, Perugia is not only a city for the gluttonous (re: chocolate), but for artists and art lovers alike. This splendid capital of the Region of Umbria is also a culture capital par excellence, and the seat of two important universites: Università degli Studi, founded in 1308, and the University for Foreigners, the foremost in Italy. ",
         "image": "/images/perugia1.jpg"
     },
     {
@@ -16,12 +16,12 @@
     },
     {
         "name": "Siena",
-        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
+        "description": "Siena is likely Italy's loveliest medieval city, and a trip worth making even if you are in Tuscany for just a few days. Siena's heart is its central piazza known as Il Campo, known worldwide for the famous Palio run here, a horse race run around the piazza two times every summer",
         "image": "/images/siena1.jpg"
     },
     {
         "name": "Roma",
-        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
+        "description": "Rome is one of the world’s great cities, and has been for more than two thousand years. It is simultaneously fabulous and frustrating, a busy city that doesn’t dwell in its past but incorporates its history into a very modern existence. There is no city on earth quite like Rome, for better and for worse.",
         "image": "/images/roma1.jpg"
     },
     {
@@ -53,6 +53,21 @@
         "name": "Matera",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
         "image": "/images/matera.jpg"
+    },
+    {
+        "name": "Verona",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
+        "image": "/images/verona.jpg"
+    },
+    {
+        "name": "Verona",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
+        "image": "/images/verona.jpg"
+    },
+    {
+        "name": "Verona",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minus, maxime eos excepturi, tenetur dolor vitae id nesciunt voluptas incidunt quidem. Excepturi tempore officiis voluptate optio at, necessitatibus reprehenderit asperiores?",
+        "image": "/images/verona.jpg"
     },
     {
         "name": "Verona",

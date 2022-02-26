@@ -19,7 +19,7 @@ function renderSlides(cities, imagesPerSlide = 1) {
       <figcaption>{city.name}</figcaption>
     </figure>
   );
-  return Array.from({ length: Math.ceil(cities.length / imagesPerSlide) }, (_, index)=> {
+  return Array.from({ length: Math.ceil(cities.length / imagesPerSlide) }, (_, index) => {
     let slideImages = allImages.splice(0, imagesPerSlide);
     return (<SwiperSlide key={"slide-" + index}><div>{slideImages}</div></SwiperSlide>);
   });
@@ -28,7 +28,11 @@ function renderSlides(cities, imagesPerSlide = 1) {
 export default function CustomAutoplaySwipper() {
   const [cities, setCities] = useState([]);
   useEffect(() => {
-    api.fetchCities().then(response => response.json()).then(data => setCities(data));
+    api.obtainCities().then(response => {
+      if (response.data.success) {
+        setCities(response.data.content.cities);
+      }
+    });
   });
   return (
     <Swiper

@@ -1,9 +1,11 @@
+const axios = require('axios');
+
 const port = 4000;
 
 const url = 'http://localhost:' + port;
 
-function fetchCities() {
-    return fetch(url + '/cities');
+function obtainCities() {
+    return axios.get(url + '/api/cities');
 }
 
-module.exports = { url, fetchCities };
+module.exports = { url, obtainCities };
