@@ -5,15 +5,12 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import HeroImage from '../HeroImage';
-
 import '../styles/Cities.css';
-
 import api from '../../api.js';
-
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-
 import React, { useState, useEffect } from 'react';
+import { Link as LinkRouter } from "react-router-dom"
 
 const filterOptions = createFilterOptions({
     matchFrom: 'start',
@@ -23,6 +20,8 @@ const filterOptions = createFilterOptions({
 // const [search, setSearch] = useState('');
 
 export default function Cities() {
+
+
     const [search, setSearch] = useState('');
     const [allCities, setAllCities] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -33,12 +32,18 @@ export default function Cities() {
                 setIsLoaded(true);
             }
         });
+        // const response = await api.obtainCities();
+        // if (response.data.success) {
+        // setAllCities();
+        // setIsLoaded(true);
+        // }
     });
     const cities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search));
+
     return (
         <>
-            <HeroImage image={api.url + "/images/italy.jpg"}>
-
+            <HeroImage image={api.url + "/images/sardegna_hero.jpg"}>
+                <h1>LET THE ADVENTURE BEGIN</h1>
             </HeroImage>
             <Autocomplete
                 freeSolo
@@ -80,10 +85,14 @@ export default function Cities() {
                                             {city.description}
                                         </Typography>
                                     </CardContent>
-                                    <CardActions>
-                                        <Button size="small">Share</Button>
-                                        <Button size="small">Learn More</Button>
-                                    </CardActions>
+                                    <LinkRouter style={{ textDecoration: 'none' }} to={"/cities/" + city._id}>
+                                        {/* <LinkRouter to=`detalle/${cities.id}`}> */}
+                                        <CardActions>
+
+                                            <Button size="small">More Details</Button>
+
+                                        </CardActions>
+                                    </LinkRouter>
                                 </Card>
                             )}
             </section>

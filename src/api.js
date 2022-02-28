@@ -8,4 +8,8 @@ function obtainCities() {
     return axios.get(url + '/api/cities');
 }
 
-module.exports = { url, obtainCities };
+function obtainCity(id) {
+    return axios.get(url + '/api/cities/' + id);
+}
+
+module.exports = { url, obtainCities, obtainCity };

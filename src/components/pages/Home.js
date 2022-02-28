@@ -8,7 +8,7 @@ export default function Home() {
     return (
         <>
             <HeroImage image={api.url + "/images/sardegna1.jpg"}>
-                <h1>Find your perfect trip</h1>
+                <h1>FIND YOUR PERFECT TRIP</h1>
                 <p>Designed by insiders who know and love their cities!</p>
             </HeroImage>
             <CallToAction />
