@@ -23,6 +23,10 @@ function renderSlides(cities, imagesPerSlide = 1) {
     let slideImages = allImages.splice(0, imagesPerSlide);
     return (<SwiperSlide key={"slide-" + index}><div>{slideImages}</div></SwiperSlide>);
   });
+  // return new Array(Math.ceil(cities.length / imagesPerSlide)).map((_, index) => {
+  //   let slideImages = allImages.splice(0, imagesPerSlide);
+  //   return (<SwiperSlide key={"slide-" + index}><div>{slideImages}</div></SwiperSlide>);
+  // });
 }
 
 export default function CustomAutoplaySwipper() {
@@ -30,7 +34,7 @@ export default function CustomAutoplaySwipper() {
   useEffect(() => {
     api.obtainCities().then(response => {
       if (response.data.success) {
-        setCities(response.data.content.cities);
+        setCities(response.data.content.cities.slice(0, 12));
       }
     });
   });

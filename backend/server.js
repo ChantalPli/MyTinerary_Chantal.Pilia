@@ -14,7 +14,7 @@ app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
-// app.use(express.json()); //para recibir la respuesta en formato json !!!!!!
+app.use(express.json()); //para recibir la solicitud en formato json !!!!!!
 
 app.use('/api', router);
 

@@ -20,8 +20,6 @@ const filterOptions = createFilterOptions({
 // const [search, setSearch] = useState('');
 
 export default function Cities() {
-
-
     const [search, setSearch] = useState('');
     const [allCities, setAllCities] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -38,8 +36,7 @@ export default function Cities() {
         // setIsLoaded(true);
         // }
     });
-    const cities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search));
-
+    const cities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search.toLowerCase()));
     return (
         <>
             <HeroImage image={api.url + "/images/sardegna_hero.jpg"}>

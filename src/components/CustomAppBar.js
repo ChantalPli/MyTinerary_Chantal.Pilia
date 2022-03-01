@@ -63,7 +63,9 @@ export default function CustomAppBar() {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                        MYTINERARY
+                        <Link style={{ color: 'inherit', textDecoration: 'none' }} to="/home">
+                            MYTINERARY
+                        </Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
@@ -109,7 +111,9 @@ export default function CustomAppBar() {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                     >
-                        MYTINERARY
+                        <Link style={{ color: 'inherit', textDecoration: 'none' }} to="/home">
+                            MYTINERARY
+                        </Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (

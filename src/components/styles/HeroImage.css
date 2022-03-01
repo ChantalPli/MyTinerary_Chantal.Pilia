@@ -1,5 +1,7 @@
 .hero-image {
     background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
     color: white;
     display: flex;
     flex-direction: column;

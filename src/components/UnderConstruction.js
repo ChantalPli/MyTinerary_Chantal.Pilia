@@ -2,7 +2,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
+import './styles/UnderConstruction.css';
+import { Link } from "react-router-dom"
+
 
 import "./styles/CallToAction.css";
 
@@ -10,10 +13,10 @@ import api from '../api.js';
 
 export default function UnderConstruction(props) {
     return (
-        <Card sx={{ maxWidth: 600 }}>
+        <Card sx={{ maxWidth: 900 }} className="card_under" >
             <CardMedia
                 component="img"
-                height="180"
+                height="270"
                 image={api.url + props.image}
                 alt={props.title}
             />
@@ -26,12 +29,16 @@ export default function UnderConstruction(props) {
                 </Typography>
             </CardContent>
             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Button size="small" color="primary">
-                    Back to Home
-                </Button>
-                <Button size="small" color="primary">
-                    Back to Cities
-                </Button>
+                <Link style={{ textDecoration: 'none' }} to="/home">
+                    <Button size="small" color="primary">
+                        Back to Home
+                    </Button>
+                </Link>
+                <Link style={{ textDecoration: 'none' }} to="/cities">
+                    <Button size="small" color="primary">
+                        Back to Cities
+                    </Button>
+                </Link>
             </CardActions>
         </Card>
     );
