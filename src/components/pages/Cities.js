@@ -12,7 +12,7 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useState, useEffect } from 'react';
 import { Link as LinkRouter } from "react-router-dom"
 
-const filterOptions = createFilterOptions({
+const myFilterOptions = createFilterOptions({
     matchFrom: 'start',
     trim: true,
 });
@@ -20,15 +20,15 @@ const filterOptions = createFilterOptions({
 // const [search, setSearch] = useState('');
 
 export default function Cities() {
-    const [search, setSearch] = useState('');
-    const [allCities, setAllCities] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [search, setSearch] = useState('');////buscador valor inicial string vcio
+    const [isCitiesLoaded, setIsLoaded] = useState(false); ///determina si lista ciudades esta cargada 
+    const [allCities, setAllCities] = useState([]); //lista citta 
     useEffect(() => {
         api.obtainCities().then(response => {
             if (response.data.success) {
-                setAllCities(response.data.content.cities);
-                setIsLoaded(true);
+                setAllCities(response.data.content.cities);// allCities = response.data.content.cities
             }
+            setIsLoaded(true);// isLoaded = true
         });
         // const response = await api.obtainCities();
         // if (response.data.success) {
@@ -36,7 +36,7 @@ export default function Cities() {
         // setIsLoaded(true);
         // }
     });
-    const cities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search.toLowerCase()));
+    const targetCities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search));
     return (
         <>
             <HeroImage image={api.url + "/images/sardegna_hero.jpg"}>
@@ -45,7 +45,7 @@ export default function Cities() {
             <Autocomplete
                 freeSolo
                 disableClearable
-                filterOptions={filterOptions}
+                filterOptions={myFilterOptions}
                 sx={{ margin: '16px auto', width: 300 }}
                 options={allCities.map(city => city.name).sort()}
                 renderInput={params => (
@@ -64,9 +64,9 @@ export default function Cities() {
             />
             <section className="cards-of-cities">
                 {
-                    !isLoaded ? (<h2>Loading...</h2>) :
-                        cities.length === 0 ? (<h2>Sorry, we couldn't find any results for this search</h2>) :
-                            cities.map((city, index) =>
+                    !isCitiesLoaded ? (<h2>Loading...</h2>) :
+                        targetCities.length === 0 ? (<h2>Sorry, we couldn't find any city</h2>) :
+                            targetCities.map((city, index) =>
                                 <Card className="cards_h lampara" key={index} sx={{ maxWidth: 600, }}>
                                     <CardMedia
                                         component="img"
@@ -83,11 +83,8 @@ export default function Cities() {
                                         </Typography>
                                     </CardContent>
                                     <LinkRouter style={{ textDecoration: 'none' }} to={"/cities/" + city._id}>
-                                        {/* <LinkRouter to=`detalle/${cities.id}`}> */}
                                         <CardActions>
-
                                             <Button size="small">More Details</Button>
-
                                         </CardActions>
                                     </LinkRouter>
                                 </Card>

@@ -7,9 +7,9 @@ import UnderConstruction from "../UnderConstruction";
 // <City name="Medellín" image="image.jpg" />
 
 export default function City() {
-    const { id } = useParams();
+    const { id } = useParams();///toma el id que esta en la url
     const [city, setCity] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isCityLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
         api.obtainCity(id).then(response => {
             if (response.data.success) {
@@ -19,7 +19,7 @@ export default function City() {
         });
     });
     return (
-        !isLoaded ? (<h1>Loading...</h1>) :
+        !isCityLoaded ? (<h1>Loading...</h1>) :
             city === null ? (<h1>City not found</h1>) :
                 (<>
                     <HeroImage image={api.url + city.image}>
