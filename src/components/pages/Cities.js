@@ -65,9 +65,9 @@ export default function Cities() {
             <section className="cards-of-cities">
                 {
                     !isLoaded ? (<h2>Loading...</h2>) :
-                        cities.length === 0 ? (<h2>No cities</h2>) :
+                        cities.length === 0 ? (<h2>Sorry, we couldn't find any results for this search</h2>) :
                             cities.map((city, index) =>
-                                <Card key={index} sx={{ maxWidth: 600 }}>
+                                <Card className="cards_h lampara" key={index} sx={{ maxWidth: 600, }}>
                                     <CardMedia
                                         component="img"
                                         height="300"
