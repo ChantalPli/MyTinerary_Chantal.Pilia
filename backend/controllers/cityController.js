@@ -1,6 +1,6 @@
-const cities = require('../models/cities');
+const cities = require('../models/City');
 
-const citiesController = {
+const cityController = {
     obtainCities: async (request, response) => {
         let result, error = null;
         try {
@@ -26,15 +26,7 @@ const citiesController = {
         });
     },
     insertCity: async (request, response) => {
-        // console.log(request.body);
         new cities(request.body).save().then((data) => response.json(data));
-        // const { city, image, description } = request.body;
-        // new cities({
-        //     name: city,
-        //     description: description,
-        //     image: image,
-        // }).save()
-        //     .then((respuesta) => response.json({ respuesta }));
     },
     deleteCity: async (request, response) => {
         response.json(await cities.findOneAndDelete({ _id: request.params.id }));
@@ -44,4 +36,4 @@ const citiesController = {
     }
 };
 
-module.exports = citiesController;
+module.exports = cityController;

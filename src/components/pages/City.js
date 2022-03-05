@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from '../../api';
 import UnderConstruction from "../UnderConstruction";
+import CardDos from "../ItineraryPrueba";
+
 
 // <City name="Medellín" image="image.jpg" />
 
@@ -26,9 +28,14 @@ export default function City() {
                         <h1>{city.name}</h1>
                         <p>Under construction</p>
                     </HeroImage>
+                    <CardDos />
                     <UnderConstruction title={city.name} image={city.image}>
-                        Under construction
+                        <p>Under construction</p>
                     </UnderConstruction>
+
+
+
+
                 </>)
     );
 }
