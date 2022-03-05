@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const activitySchema = new mongoose.Schema({
     name: { type: String, required: true },
     image: { type: String, required: true },
-    itinerary: { type: mongoose.Schema.ObjectId, ref: 'Itinerary' }
+    itinerary: { type: mongoose.Schema.Types.ObjectId, ref: 'Itinerary' }
 });
 
-const Activity = mongoose.model('Activity', activitySchema, 'activities');
+const Activity = mongoose.model('Activity', activitySchema, 'Activity');
 
 module.exports = Activity;

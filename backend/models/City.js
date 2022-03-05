@@ -4,8 +4,9 @@ const citySchema = new mongoose.Schema({
     name: { type: String, required: true },
     image: { type: String, required: true },
     description: { type: String, required: true },
+    itineraries: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Itinerary' }]
 })
 
-const City = mongoose.model('City', citySchema, 'cities');
+const City = mongoose.model('City', citySchema);
 
 module.exports = City;

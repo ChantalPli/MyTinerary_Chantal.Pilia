@@ -5,7 +5,7 @@ const itineraryController = {
     obtainItineraries: async (request, response) => {
         let result, error = null;
         try {
-            result = await Itinerary.find().populate('city');
+            result = await Itinerary.find().populate('activities');
         } catch (error) {
             console.log(error);
         }
@@ -17,7 +17,7 @@ const itineraryController = {
     obtainItinerary: async (request, response) => {
         let result, error = null;
         try {
-            result = await Itinerary.find({ _id: request.params.id }).populate('city');
+            result = await Itinerary.find({ _id: request.params.id }).populate('activities');
         } catch (error) {
             console.log(error);
         }

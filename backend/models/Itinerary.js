@@ -10,10 +10,10 @@ const itinerarySchema = new mongoose.Schema({
     price: { type: Number, required: true },
     likes: { type: Number, required: true },
     hashtags: { type: Array, required: true },
-    city: { type: mongoose.Schema.ObjectId, ref: 'City' },
-    activities: [{ type: mongoose.Schema.ObjectId, ref: 'Activity' }],
+    city: { type: mongoose.Schema.Types.ObjectId, ref: 'City' },
+    activities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Activity' }],
 });
 
-const Itinerary = mongoose.model('Itinerary', itinerarySchema, 'itineraries');
+const Itinerary = mongoose.model('Itinerary', itinerarySchema);
 
 module.exports = Itinerary; 

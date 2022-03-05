@@ -1,10 +1,10 @@
-const cities = require('../models/City');
+const City = require('../models/City');
 
 const cityController = {
     obtainCities: async (request, response) => {
         let result, error = null;
         try {
-            result = await cities.find();
+            result = await City.find();
         } catch (error) {
             console.log(error);
         }
@@ -16,7 +16,7 @@ const cityController = {
     obtainCity: async (request, response) => {
         let result, error = null;
         try {
-            result = await cities.find({ _id: request.params.id });
+            result = await City.find({ _id: request.params.id });
         } catch (error) {
             console.log(error);
         }
@@ -26,13 +26,13 @@ const cityController = {
         });
     },
     insertCity: async (request, response) => {
-        new cities(request.body).save().then((data) => response.json(data));
+        new City(request.body).save().then((data) => response.json(data));
     },
     deleteCity: async (request, response) => {
-        response.json(await cities.findOneAndDelete({ _id: request.params.id }));
+        response.json(await City.findOneAndDelete({ _id: request.params.id }));
     },
     modifyCity: async (request, response) => {
-        response.json(await cities.findOneAndUpdate({ _id: request.params.id }, request.body));
+        response.json(await City.findOneAndUpdate({ _id: request.params.id }, request.body));
     }
 };
 
