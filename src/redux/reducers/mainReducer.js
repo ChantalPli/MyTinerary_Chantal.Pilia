@@ -1,11 +1,10 @@
-//  import {combineReducers} from 'redux'; 04.03
-// import productReducer from './productosReducer';
+import { combineReducers } from 'redux';
+import citiesReducer from './citiesReducer';
 // import authReducer from './authReducer';
 
-// const mainReducer = combineReducers ({
-//         productosReducer,
-//        authReducer
+const mainReducer = combineReducers({
+    citiesReducer
+    // authReducer
+})
 
-// })
-
-// export default mainReducer
+export default mainReducer;

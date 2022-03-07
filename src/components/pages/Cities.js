@@ -12,31 +12,44 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useState, useEffect } from 'react';
 import { Link as LinkRouter } from "react-router-dom"
 
+import { connect, useDispatch, } from 'react-redux';
+import citiesAction from '../../redux/actions/citiesAction';
+
 const myFilterOptions = createFilterOptions({
     matchFrom: 'start',
     trim: true,
 });
 
-// const [search, setSearch] = useState('');
-
-export default function Cities() {
-    const [search, setSearch] = useState('');////buscador valor inicial string vcio
-    const [isCitiesLoaded, setIsLoaded] = useState(false); ///determina si lista ciudades esta cargada 
-    const [allCities, setAllCities] = useState([]); //lista citta 
+function Cities(props) {
+    const {
+        allCitiesReady: ready, // Indica si la lista de ciudades cargó
+        allCities, // Contiene la lista de todas las ciudades
+        filteredCities, // Contiene la lista de ciudades a mostarr
+        obtainCities, // funcion que obtiene la lista de ciudades del backend
+        filterCities // funcion que actualiza el filtro
+    } = props;
+    // const dispatch = useDispatch();
     useEffect(() => {
-        api.obtainCities().then(response => {
-            if (response.data.success) {
-                setAllCities(response.data.content.cities);// allCities = response.data.content.cities
-            }
-            setIsLoaded(true);// isLoaded = true
-        });
-        // const response = await api.obtainCities();
-        // if (response.data.success) {
-        // setAllCities();
-        // setIsLoaded(true);
-        // }
-    });
-    const targetCities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search));
+        if (!ready)
+            obtainCities();
+    }, []);
+    // const [search, setSearch] = useState('');////buscador valor inicial string vcio
+    // const [isCitiesLoaded, setIsLoaded] = useState(false); ///determina si lista ciudades esta cargada 
+    // const [allCities, setAllCities] = useState([]); //lista citta 
+    // useEffect(() => {
+    //     api.obtainCities().then(response => {
+    //         if (response.data.success) {
+    //             setAllCities(response.data.content.cities);// allCities = response.data.content.cities
+    //         }
+    //         setIsLoaded(true);// isLoaded = true
+    //     });
+    //     // const response = await api.obtainCities();
+    //     // if (response.data.success) {
+    //     // setAllCities();
+    //     // setIsLoaded(true);
+    //     // }
+    // });
+    // const filteredCities = search === '' ? allCities : allCities.filter(city => city.name.toLowerCase().startsWith(search));
     return (
         <>
             <HeroImage image={api.url + "/images/sardegna_hero.jpg"}>
@@ -57,16 +70,17 @@ export default function Cities() {
                             type: 'search',
                         }}
                         onChange={event => {
-                            setSearch(event.target.value.trim().toLowerCase())
+                            filterCities(event.target.value.trim().toLowerCase());
+                            // dispatch({ type: 'cities/filter', payload: event.target.value.trim().toLowerCase() });
                         }}
                     />
                 )}
             />
             <section className="cards-of-cities">
                 {
-                    !isCitiesLoaded ? (<h2>Loading...</h2>) :
-                        targetCities.length === 0 ? (<h2>Sorry, we couldn't find any city</h2>) :
-                            targetCities.map((city, index) =>
+                    !ready ? (<h2>Loading...</h2>) :
+                        filteredCities.length === 0 ? (<h2>Sorry, we couldn't find any city</h2>) :
+                            filteredCities.map((city, index) =>
                                 <Card className="cards_h lampara" key={index} sx={{ maxWidth: 600, }}>
                                     <CardMedia
                                         component="img"
@@ -93,3 +107,5 @@ export default function Cities() {
         </>
     )
 }
+
+export default connect(state => state.citiesReducer, citiesAction)(Cities);

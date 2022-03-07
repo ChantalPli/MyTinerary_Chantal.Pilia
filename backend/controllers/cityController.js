@@ -4,7 +4,7 @@ const cityController = {
     obtainCities: async (request, response) => {
         let result, error = null;
         try {
-            result = await City.find();
+            result = await City.find().populate('itineraries');
         } catch (error) {
             console.log(error);
         }
@@ -16,7 +16,7 @@ const cityController = {
     obtainCity: async (request, response) => {
         let result, error = null;
         try {
-            result = await City.find({ _id: request.params.id });
+            result = await City.find({ _id: request.params.id }).populate('itineraries');
         } catch (error) {
             console.log(error);
         }

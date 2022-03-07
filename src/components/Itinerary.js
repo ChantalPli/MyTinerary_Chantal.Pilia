@@ -19,8 +19,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './Itinerary.css'
 import { Link } from "react-router-dom"
 import { Button } from '@mui/material';
-
 import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import { WatchLater } from "@mui/icons-material";
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -33,19 +35,17 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function CardDos() {
+export default function Itinerary(props) {
     const [expanded, setExpanded] = React.useState(false);
-
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
     return (
         <Card className="itinerary" sx={{ maxWidth: 800 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        A
+                        <img width={40} alt={props.data.name} src={api.url + props.data.avatar} />
                     </Avatar>
                 }
                 // action={
@@ -53,26 +53,30 @@ export default function CardDos() {
                 //         <MoreVertIcon />
                 //     </IconButton>
                 // }
-                title="Food Tour"
-                subheader="By John Smith"
+                title={props.data.title}
+                subheader={'By ' + props.data.name}
             />
             <CardMedia
                 component="img"
-                height="194"
-                image={api.url + "/images/food.jpg"}
-                alt="Paella dish"
+                height="350"
+                image={api.url + props.data.image}
+                alt={props.data.title}
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
+                    {props.data.description}
+                    <div className="details">
+                        <Chip label={props.data.duration + " hours"} icon={<WatchLater />} />
+                        {props.data.hashtags.map(hashtag => <Link to={hashtag}>{hashtag}</Link>)}
+                    </div>
+                    <div>Price: {Array.from({ length: props.data.price }, () => <LocalAtmIcon />)}</div>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">
                     <ThumbUpIcon />
                 </IconButton>
+                {props.data.likes}
                 {/* <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton> */}
@@ -100,7 +104,7 @@ export default function CardDos() {
                     <ExpandMoreIcon />
                 </ExpandMore>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse className="collapse" in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <Typography paragraph>Tour:</Typography>
                     <Typography paragraph>

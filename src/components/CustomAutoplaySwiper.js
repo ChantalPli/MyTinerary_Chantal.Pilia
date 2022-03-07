@@ -12,6 +12,9 @@ import api from '../api.js';
 
 import React, { useState, useEffect } from 'react';
 
+import { connect } from "react-redux";
+import citiesAction from "../redux/actions/citiesAction"
+
 function renderSlides(cities, imagesPerSlide = 1) {
   let allImages = cities.map((city, index) =>
     <figure key={"figure-" + index}>
@@ -28,16 +31,24 @@ function renderSlides(cities, imagesPerSlide = 1) {
   //   return (<SwiperSlide key={"slide-" + index}><div>{slideImages}</div></SwiperSlide>);
   // });
 }
-
-export default function CustomAutoplaySwipper() {
-  const [cities, setCities] = useState([]);
+function CustomAutoplaySwipper(props) {
+  // const [cities, setCities] = useState([]);
+  const {
+    ready, // Indica si la lista de ciudades cargó
+    allCities: cities, // Contiene la lista de todas las ciudades
+    obtainCities, // funcion que obtiene la lista de ciudades del backend
+  } = props;
   useEffect(() => {
-    api.obtainCities().then(response => {
-      if (response.data.success) {
-        setCities(response.data.content.cities.slice(0, 12));
-      }
-    });
-  });
+    if (!ready)
+      obtainCities();
+  }, []);
+  // useEffect(() => {
+  //   api.obtainCities().then(response => {
+  //     if (response.data.success) {
+  //       setCities(response.data.content.cities.slice(0, 12));
+  //     }
+  //   });
+  // });
   return (
     <Swiper
       spaceBetween={30}
@@ -53,7 +64,9 @@ export default function CustomAutoplaySwipper() {
       modules={[Autoplay, Pagination, Navigation]}
       className="mySwiper"
     >
-      {renderSlides(cities, 4)}
+      {renderSlides(cities.slice(0, 12), 4)}
     </Swiper>
   );
 }
+
+export default connect(state => state.citiesReducer, citiesAction)(CustomAutoplaySwipper);

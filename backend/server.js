@@ -19,6 +19,7 @@ app.use(express.json()); //para recibir la solicitud en formato json !!!!!!
 app.use('/api', router);
 
 app.use('/images', express.static('./images'));
+app.use('/avatars', express.static('./avatars'));
 
 app.listen(port, () => console.log('Server started'));
 
