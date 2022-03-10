@@ -5,7 +5,8 @@ const itineraryController = {
     fetchItineraries: async (request, response) => {
         let result, error = null;
         try {
-            result = await Itinerary.find(request.query);// request.query = { city: "6219ac8a754e451ed1d630a1"}
+            // e.g: request.query = { city: "6219ac8a754e451ed1d630a1" }
+            result = await Itinerary.find(request.query);
         } catch (error) {
             console.log(error);
         }
