@@ -1,25 +1,31 @@
 import api from '../../api'
 
 const citiesAction = {
-    obtainCities: () => {
+    fetchCities: () => {
         return async (dispatch, getState) => {
-            const response = await api.obtainCities();
+            const response = await api.fetchCities();
             if (response.data.success) {
-                dispatch({ type: 'cities/obtain-all', payload: response.data.content.cities });
+                dispatch({ type: 'cities/fetch-all', payload: response.data.content.cities });
             }
         }
     },
 
-
-    obtainCity: (id) => {
+    fetchCity: (id, fetchItineraries = false) => {
         return async (dispatch, getState) => {
-            const response = await api.obtainCity(id);
-            if (response.data.success) {
-                dispatch({ type: 'cities/obtain-one', payload: response.data.content.city });
+            const responseCity = await api.fetchCity(id);
+            if (responseCity.data.success) {
+                const city = responseCity.data.content.city;
+                city.itineraries = [];
+                if (fetchItineraries) {
+                    const responseItineraries = await api.fetchItineraries({ city: id });
+                    if (responseItineraries.data.success) {
+                        city.itineraries = responseItineraries.data.content.itineraries;
+                    }
+                }
+                dispatch({ type: 'cities/fetch-one', payload: city });
             }
         }
     },
-
 
     filterCities: (filter) => {
         return async (dispatch, getState) => {

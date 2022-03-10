@@ -2,10 +2,10 @@ const Itinerary = require('../models/Itinerary');
 const Activity = require('../models/Activity');
 
 const itineraryController = {
-    obtainItineraries: async (request, response) => {
+    fetchItineraries: async (request, response) => {
         let result, error = null;
         try {
-            result = await Itinerary.find().populate('activities');
+            result = await Itinerary.find(request.query);// request.query = { city: "6219ac8a754e451ed1d630a1"}
         } catch (error) {
             console.log(error);
         }
@@ -14,10 +14,10 @@ const itineraryController = {
             content: error ? error : { itineraries: result },
         });
     },
-    obtainItinerary: async (request, response) => {
+    fetchItinerary: async (request, response) => {
         let result, error = null;
         try {
-            result = await Itinerary.find({ _id: request.params.id }).populate('activities');
+            result = await Itinerary.find({ _id: request.params.id });
         } catch (error) {
             console.log(error);
         }

@@ -12,3 +12,8 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.message {
+    text-align: center;
+    line-height: 40vh;
+}

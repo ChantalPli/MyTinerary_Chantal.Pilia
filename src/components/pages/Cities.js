@@ -9,10 +9,10 @@ import '../styles/Cities.css';
 import api from '../../api.js';
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link as LinkRouter } from "react-router-dom"
 
-import { connect, useDispatch, } from 'react-redux';
+import { connect } from 'react-redux';
 import citiesAction from '../../redux/actions/citiesAction';
 
 const myFilterOptions = createFilterOptions({
@@ -21,29 +21,33 @@ const myFilterOptions = createFilterOptions({
 });
 
 function Cities(props) {
+
     const {
         allCitiesReady: ready, // Indica si la lista de ciudades cargó
         allCities, // Contiene la lista de todas las ciudades
-        filteredCities, // Contiene la lista de ciudades a mostarr
-        obtainCities, // funcion que obtiene la lista de ciudades del backend
+        filteredCities, // Contiene la lista de ciudades a mostrar
+        fetchCities, // funcion que obtiene la lista de ciudades del backend
         filterCities // funcion que actualiza el filtro
     } = props;
-    // const dispatch = useDispatch();
+
+    // allCities === props.allCities
+    // ready === props.allCitiesReady
+
     useEffect(() => {
         if (!ready)
-            obtainCities();
-    }, []);
+            fetchCities();
+    }, [ready, fetchCities]);
     // const [search, setSearch] = useState('');////buscador valor inicial string vcio
     // const [isCitiesLoaded, setIsLoaded] = useState(false); ///determina si lista ciudades esta cargada 
     // const [allCities, setAllCities] = useState([]); //lista citta 
     // useEffect(() => {
-    //     api.obtainCities().then(response => {
+    //     api.fetchCities().then(response => {
     //         if (response.data.success) {
     //             setAllCities(response.data.content.cities);// allCities = response.data.content.cities
     //         }
     //         setIsLoaded(true);// isLoaded = true
     //     });
-    //     // const response = await api.obtainCities();
+    //     // const response = await api.fetchCities();
     //     // if (response.data.success) {
     //     // setAllCities();
     //     // setIsLoaded(true);
@@ -71,15 +75,14 @@ function Cities(props) {
                         }}
                         onChange={event => {
                             filterCities(event.target.value.trim().toLowerCase());
-                            // dispatch({ type: 'cities/filter', payload: event.target.value.trim().toLowerCase() });
                         }}
                     />
                 )}
             />
             <section className="cards-of-cities">
                 {
-                    !ready ? (<h2>Loading...</h2>) :
-                        filteredCities.length === 0 ? (<h2>Sorry, we couldn't find any city</h2>) :
+                    !ready ? (<h1 className="message">Loading...</h1>) :
+                        filteredCities.length === 0 ? (<h1 className="message">Sorry, we couldn't find any city</h1>) :
                             filteredCities.map((city, index) =>
                                 <Card className="cards_h lampara" key={index} sx={{ maxWidth: 600, }}>
                                     <CardMedia

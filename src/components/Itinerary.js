@@ -12,14 +12,10 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import './Itinerary.css'
+import './styles/Itinerary.css'
 import { Link } from "react-router-dom"
 import { Button } from '@mui/material';
-import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import { WatchLater } from "@mui/icons-material";
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
@@ -69,7 +65,8 @@ export default function Itinerary(props) {
                         <Chip label={props.data.duration + " hours"} icon={<WatchLater />} />
                         {props.data.hashtags.map(hashtag => <Link to={hashtag}>{hashtag}</Link>)}
                     </div>
-                    <div>Price: {Array.from({ length: props.data.price }, () => <LocalAtmIcon />)}</div>
+                    <div style={{ fontWeight: 'bold', lineHeight: '36px' }}>Price:</div>
+                    <div>{Array.from({ length: props.data.price }, () => <LocalAtmIcon />)}</div>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -80,7 +77,6 @@ export default function Itinerary(props) {
                 {/* <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton> */}
-
                 <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Link style={{ textDecoration: 'none' }} to="/home">
                         <Button size="small" color="primary">
@@ -93,8 +89,6 @@ export default function Itinerary(props) {
                         </Button>
                     </Link>
                 </CardActions>
-
-
                 <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}

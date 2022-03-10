@@ -1,18 +1,20 @@
 const initialState = {
+    // Cities
     filter: '',
     allCitiesReady: false,
     allCities: [],
     filteredCities: [],
+    // City
     cityReady: false,
     city: null,
 };
 
 const citiesReducer = (state = initialState, action) => {
-    const cityNameStartsWith = (city) => city.name.toLowerCase().startsWith(state.filter);
+    const citiesByNameStartsWith = (city) => city.name.toLowerCase().startsWith(state.filter);
     switch (action.type) {
-        case 'cities/obtain-all': {
-            const allCities = action.payload; // guarda un array con todos los objetos ciudad o sea cada objeto es una ciudad 
-            const filteredCities = state.filter === '' ? allCities : allCities.filter(cityNameStartsWith);
+        case 'cities/fetch-all': {// payload guarda un array con todas las ciudades
+            const allCities = action.payload.sort((leftCity, rightCity) => leftCity._id.localeCompare(rightCity._id)); // guarda un array con todos los objetos ciudad o sea cada objeto es una ciudad 
+            const filteredCities = state.filter === '' ? allCities : allCities.filter(citiesByNameStartsWith);
             return {
                 ...state,
                 allCitiesReady: true,
@@ -21,7 +23,7 @@ const citiesReducer = (state = initialState, action) => {
             };
         }
 
-        case 'cities/obtain-one': { // payload guarda un objeto con todos los datos de la ciudad que se buscó
+        case 'cities/fetch-one': { // payload guarda un objeto con todos los datos de la ciudad que se buscó
             return {
                 ...state,
                 cityReady: true,
@@ -30,10 +32,8 @@ const citiesReducer = (state = initialState, action) => {
         }
 
         case 'cities/delete': {//payload guarda un objeto con todos los datos de la ciudad que se borró
-            const allCities = state.allCities.filter(
-                city => city._id !== action.payload._id
-            );
-            const filteredCities = state.filter === '' ? allCities : allCities.filter(cityNameStartsWith);
+            const allCities = state.allCities.filter(city => city._id !== action.payload._id);
+            const filteredCities = state.filter === '' ? allCities : allCities.filter(citiesByNameStartsWith);
             return {
                 ...state,
                 allCities,
@@ -47,7 +47,7 @@ const citiesReducer = (state = initialState, action) => {
             // allCities.push(action.payload);
 
             const allCities = [...state.allCities, action.payload];
-            const filteredCities = state.filter === '' ? allCities : allCities.filter(cityNameStartsWith);
+            const filteredCities = state.filter === '' ? allCities : allCities.filter(citiesByNameStartsWith);
             return {
                 ...state,
                 allCities,
@@ -55,7 +55,7 @@ const citiesReducer = (state = initialState, action) => {
             }
         }
         case 'cities/filter': {
-            const filter = action.payload;
+            const filter = action.payload; // String guarda el nombre de la ciudad que se está buscando 
             const filteredCities = filter === '' ? state.allCities : state.allCities.filter((city) => city.name.toLowerCase().startsWith(filter));
             return {
                 ...state,

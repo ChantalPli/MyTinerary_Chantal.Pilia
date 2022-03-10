@@ -4,10 +4,10 @@ const Itinerary = require('../models/Itinerary');
 
 
 const activityController = {
-    obtainActivities: async (request, response) => {
+    fetchActivities: async (request, response) => {
         let result, error = null;
         try {
-            result = await Activity.find().populate('itinerary');
+            result = await Activity.find();
         } catch (error) {
             console.log(error);
         }
@@ -16,10 +16,10 @@ const activityController = {
             content: error ? error : { activities: result },
         });
     },
-    obtainActivity: async (request, response) => {
+    fetchActivity: async (request, response) => {
         let result, error = null;
         try {
-            result = await Activity.find({ _id: request.params.id }).populate('itinerary');
+            result = await Activity.find({ _id: request.params.id });
         } catch (error) {
             console.log(error);
         }

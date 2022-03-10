@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const router = require('./routes/router');
+const routes = require('./routes/routes');
 
 require('dotenv').config();
 require('./config/database');
@@ -16,7 +16,7 @@ app.use(cors({
 
 app.use(express.json()); //para recibir la solicitud en formato json !!!!!!
 
-app.use('/api', router);
+app.use('/api', routes);
 
 app.use('/images', express.static('./images'));
 app.use('/avatars', express.static('./avatars'));

@@ -1,10 +1,10 @@
 const City = require('../models/City');
 
 const cityController = {
-    obtainCities: async (request, response) => {
-        let result, error = null;
+    fetchCities: async (request, response) => {
+        let result = null, error = null;
         try {
-            result = await City.find().populate('itineraries');
+            result = await City.find();
         } catch (error) {
             console.log(error);
         }
@@ -13,10 +13,10 @@ const cityController = {
             content: error ? error : { cities: result },
         });
     },
-    obtainCity: async (request, response) => {
-        let result, error = null;
+    fetchCity: async (request, response) => {
+        let result = null, error = null;
         try {
-            result = await City.find({ _id: request.params.id }).populate('itineraries');
+            result = await City.find({ _id: request.params.id });
         } catch (error) {
             console.log(error);
         }

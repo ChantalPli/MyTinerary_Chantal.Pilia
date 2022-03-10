@@ -10,7 +10,7 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 
 import api from '../api.js';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { connect } from "react-redux";
 import citiesAction from "../redux/actions/citiesAction"
@@ -36,14 +36,14 @@ function CustomAutoplaySwipper(props) {
   const {
     ready, // Indica si la lista de ciudades cargó
     allCities: cities, // Contiene la lista de todas las ciudades
-    obtainCities, // funcion que obtiene la lista de ciudades del backend
+    fetchCities, // funcion que obtiene la lista de ciudades del backend
   } = props;
   useEffect(() => {
     if (!ready)
-      obtainCities();
-  }, []);
+      fetchCities();
+  }, [ready, fetchCities]);
   // useEffect(() => {
-  //   api.obtainCities().then(response => {
+  //   api.fetchCities().then(response => {
   //     if (response.data.success) {
   //       setCities(response.data.content.cities.slice(0, 12));
   //     }
