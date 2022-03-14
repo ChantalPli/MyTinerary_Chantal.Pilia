@@ -3,6 +3,7 @@ const Router = require('express').Router();
 const cityController = require('../controllers/cityController');
 const itineraryController = require('../controllers/itineraryController');
 const activityController = require('../controllers/activityController');
+const userControllers = require('../controllers/userControllers');
 
 const {
     fetchCities,
@@ -45,5 +46,12 @@ Router.route('/activities/:id').get(fetchActivity);
 Router.route('/activities').post(insertActivity);
 Router.route('/activities/:id').put(modifyActivity);
 Router.route('/activities/:id').delete(deleteActivity);
+
+
+const { signUpUsers, signInUser, signOutUser } = userControllers;
+
+Router.route('/auth/signup').post(signUpUsers)
+Router.route('/auth/signin').post(signInUser)
+Router.route('/auth/signout').post(signOutUser)
 
 module.exports = Router;

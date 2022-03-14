@@ -27,7 +27,16 @@ let pages = [
         route: '/cities'
     }
 ];
-const settings = ['Sign in', 'Sign up'];
+const settings = [
+    {
+        label: 'Sign in',
+        route: '/signin'
+    },
+    {
+        label: 'Sign up',
+        route: '/signup'
+    }
+];
 
 export default function CustomAppBar() {
 
@@ -117,15 +126,15 @@ export default function CustomAppBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Button
-                                key={page.route}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'black', display: 'block' }}
-                            >
-                                <Link style={{ color: 'inherit', textDecoration: 'none' }} to={page.route}>
+                            <Link style={{ color: 'inherit', textDecoration: 'none' }} to={page.route}>
+                                <Button
+                                    key={page.route}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: 'black', display: 'block' }}
+                                >
                                     {page.label}
-                                </Link>
-                            </Button>
+                                </Button>
+                            </Link>
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
@@ -151,9 +160,11 @@ export default function CustomAppBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
+                            {settings.map(setting => (
+                                <MenuItem key={setting.route} onClick={handleCloseUserMenu}>
+                                    <Link to={setting.route} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                        <Typography textAlign="center">{setting.label}</Typography>
+                                    </Link>
                                 </MenuItem>
                             ))}
                         </Menu>

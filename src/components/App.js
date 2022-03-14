@@ -3,7 +3,9 @@ import CustomAppBar from './CustomAppBar'
 import Home from './pages/Home';
 import Cities from './pages/Cities';
 import Footer from './Footer';
-import City from './pages/City'
+import City from './pages/City';
+import SignUp from "./users/SignUp";
+import SignIn from "./users/SignIn";
 
 import {
   BrowserRouter as Router,
@@ -74,10 +76,13 @@ export default function App() {
         <CustomAppBar />
       </ThemeProvider>
       <Routes>
+        <Route exact path="/signin" element={<SignIn />} />
+        <Route exact path="/signup" element={<SignUp />} />
         <Route exact path="/cities/:id" element={<City />} />
         <Route exact path="/cities" element={<Cities />} />
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/" element={<Home />} />
+
         {/* <Route exact path="/cardDetails" element={<CardDetails />} /> */}
         {/* <Route exact path="/carDetails/:id" element={<CardDetails />}  */}
       </Routes>

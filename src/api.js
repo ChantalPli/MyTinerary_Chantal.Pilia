@@ -15,17 +15,19 @@ function fetchCity(id) {
 function fetchItineraries(queryObject) {
     let queryString = '';
     if (queryObject) {
-        // e.g: query = { city: '1', title: 'Tour' }
-        const entries = Object.entries(queryObject);
-        // entries = [ ['city', '1'], ['title', 'Tour'] ]
-        const mappedEntries = entries.map(item => item[0] + '=' + item[1]);
-        // mappedEntries = [ 'city=1', 'title=Tour' ]
-        queryString = '?' + mappedEntries.join('&');
-        // queryString = '?city=1&title=Tour'
+        // // e.g: query = { city: '1', title: 'Tour' }
+        // const entries = Object.entries(queryObject);
+        // // entries = [ ['city', '1'], ['title', 'Tour'] ]
+        // const mappedEntries = entries.map(item => item[0] + '=' + item[1]);
+        // // mappedEntries = [ 'city=1', 'title=Tour' ]
+        // queryString = '?' + mappedEntries.join('&');
+        // // queryString = '?city=1&title=Tour'
+        queryString = '?' + new URLSearchParams(queryObject).toString();
     }
     return axios.get(url + '/api/itineraries' + queryString);
 }
 
 module.exports = { url, fetchCities, fetchCity, fetchItineraries };
 
-
+// https://stackoverflow.com/questions/1714786/query-string-encoding-of-a-javascript-object
+// queryString = '?' + Object.entries(queryObject).map(([key, value]) => key + '=' + value).join('&');
