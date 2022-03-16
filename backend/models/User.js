@@ -8,9 +8,11 @@ const userSchema = new mongoose.Schema({
     emailVerified: { type: Boolean, required: true },
     picture: { type: String, required: true },
     country: { type: String, required: true },
-    from: { type: Array }
+    from: { type: Array },
+    uniqueString: { type: String, required: true },
+
 })
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('users', userSchema);
 
 module.exports = User;

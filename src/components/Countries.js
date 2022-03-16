@@ -28,6 +28,7 @@ export default function CountrySelect() {
             )}
             renderInput={(params) => (
                 <TextField
+                    name="country"
                     {...params}
                     label="Choose a country"
                     inputProps={{

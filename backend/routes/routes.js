@@ -1,5 +1,6 @@
 const Router = require('express').Router();
 
+
 const cityController = require('../controllers/cityController');
 const itineraryController = require('../controllers/itineraryController');
 const activityController = require('../controllers/activityController');
@@ -48,10 +49,14 @@ Router.route('/activities/:id').put(modifyActivity);
 Router.route('/activities/:id').delete(deleteActivity);
 
 
-const { signUpUsers, signInUser, signOutUser } = userControllers;
+const { signUpUsers, signInUser, signOutUser, verifyEmail } = userControllers;
+const validator = require('../config/validator')
 
-Router.route('/auth/signup').post(signUpUsers)
+Router.route('/auth/signup').post(validator, signUpUsers)
 Router.route('/auth/signin').post(signInUser)
 Router.route('/auth/signout').post(signOutUser)
+
+Router.route('/verify/:uniqueString') //RECIBE EL LINK DE USUARIO
+    .get(verifyEmail)
 
 module.exports = Router;

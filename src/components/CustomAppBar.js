@@ -12,33 +12,45 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-
+import userActions from '../redux/actions/userActions';
 import './styles/CustomAppBar.css';
-
 import { Link } from "react-router-dom";
+import { Avatar } from '@mui/material';
+import { connect } from 'react-redux';
 
-let pages = [
-    {
-        label: 'Home',
-        route: '/home'
-    },
-    {
-        label: 'Cities',
-        route: '/cities'
-    }
-];
-const settings = [
-    {
-        label: 'Sign in',
-        route: '/signin'
-    },
-    {
-        label: 'Sign up',
-        route: '/signup'
-    }
-];
 
-export default function CustomAppBar() {
+function CustomAppBar(props) {
+    const { user, signOutUser } = props;
+    const pages = [
+        {
+            label: 'Home',
+            route: '/home'
+        },
+        {
+            label: 'Cities',
+            route: '/cities'
+        }
+    ];
+    const userOptions = [
+        [
+            {
+                label: 'Sign in',
+                route: '/signin'
+            },
+            {
+                label: 'Sign up',
+                route: '/signup'
+            }
+        ],
+        [
+            {
+                label: "Sign out",
+                route: "/",
+                onClick: signOutUser
+
+            }
+        ]
+    ];
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -126,7 +138,7 @@ export default function CustomAppBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Link style={{ color: 'inherit', textDecoration: 'none' }} to={page.route}>
+                            <Link key={page.route} style={{ color: 'inherit', textDecoration: 'none' }} to={page.route}>
                                 <Button
                                     key={page.route}
                                     onClick={handleCloseNavMenu}
@@ -140,8 +152,7 @@ export default function CustomAppBar() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <AccountCircle sx={{ color: 'black' }} />
-                                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                                {user ? <Avatar alt={user.firstName + " " + user.lastName} src={user.picture} /> : <AccountCircle sx={{ color: 'black' }} />}
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -160,10 +171,10 @@ export default function CustomAppBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map(setting => (
-                                <MenuItem key={setting.route} onClick={handleCloseUserMenu}>
-                                    <Link to={setting.route} style={{ color: 'inherit', textDecoration: 'none' }}>
-                                        <Typography textAlign="center">{setting.label}</Typography>
+                            {userOptions[user ? 1 : 0].map(option => (
+                                <MenuItem key={option.route} onClick={handleCloseUserMenu}>
+                                    <Link onClick={option.onClick} to={option.route} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                        <Typography textAlign="center">{option.label}</Typography>
                                     </Link>
                                 </MenuItem>
                             ))}
@@ -174,3 +185,5 @@ export default function CustomAppBar() {
         </AppBar>
     );
 };
+
+export default connect(state => state.userReducer, userActions)(CustomAppBar)
