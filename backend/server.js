@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const routes = require('./routes/routes');
+const passport = require('passport');
 
 require('dotenv').config();
 require('./config/database');
 
-// const cities = require('./cities.json');
+const cities = require('./cities.json');
 
 const port = 4000;
 const app = express();
@@ -20,6 +21,7 @@ app.use('/api', routes);
 
 app.use('/images', express.static('./images'));
 app.use('/avatars', express.static('./avatars'));
+app.use(passport.initialize())
 
 app.listen(port, () => console.log('Server started'));
 

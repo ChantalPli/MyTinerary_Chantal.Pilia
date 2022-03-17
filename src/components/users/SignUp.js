@@ -17,28 +17,16 @@ import userActions from "../../redux/actions/userActions";
 import Countries from '../Countries'
 import HeroImage from '../HeroImage';
 import api from '../../api';
+import FacebookSignUp from '../facebookSignUp';
 
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const theme = createTheme();
 
 function SignUp(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
-        //  const data = new FormData(event.currentTarget);
-        // console.log(event.target)
+
         const userData = {
             // firstName: event.target.firstName.value,
             firstName: event.target.firstName.value,
@@ -49,19 +37,21 @@ function SignUp(props) {
             country: event.target.country.value,
             from: "signup"
         };
-        console.log(userData)
+
         props.signUpUser(userData);
     };
 
 
-
-    return (
+    if (props.user) //se l'usuario è connesso allora vai a home invece di farmi restare nella pagina del form
+        window.location.href = '/';
+    return props.user ? (<h1 className='message'>Redirecting...</h1>) : (
         <ThemeProvider theme={theme}>
 
             <HeroImage image={api.url + "/images/pandizucchero.jpg"} ></HeroImage>
 
 
             <Container component="main" maxWidth="xs">
+                <FacebookSignUp />
                 <CssBaseline />
                 <Box
                     sx={{
@@ -170,5 +160,9 @@ function SignUp(props) {
 
     );
 }
-
-export default connect(null, userActions)(SignUp)
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer.user
+    }
+}
+export default connect(mapStateToProps, userActions)(SignUp)

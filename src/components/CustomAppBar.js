@@ -17,12 +17,15 @@ import './styles/CustomAppBar.css';
 import { Link } from "react-router-dom";
 import { Avatar } from '@mui/material';
 import { connect } from 'react-redux';
+import { useEffect } from 'react';
 
 
 function CustomAppBar(props) {
     const { user, signOutUser } = props;
     const pages = [
+
         {
+
             label: 'Home',
             route: '/home'
         },
@@ -32,7 +35,7 @@ function CustomAppBar(props) {
         }
     ];
     const userOptions = [
-        [
+        [//Logged options
             {
                 label: 'Sign in',
                 route: '/signin'
@@ -42,12 +45,11 @@ function CustomAppBar(props) {
                 route: '/signup'
             }
         ],
-        [
+        [//Unlogged options
             {
                 label: "Sign out",
-                route: "/",
-                onClick: signOutUser
-
+                route: "#",
+                onClick: () => signOutUser(user.email)
             }
         ]
     ];

@@ -17,48 +17,39 @@ import userActions from "../../redux/actions/userActions";
 import HeroImage from '../HeroImage';
 import api from '../../api';
 
-function Copyright(props) {
-    return (
+// function Copyright(props) {
+//     return (
 
 
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//         <Typography variant="body2" color="text.secondary" align="center" {...props}>
 
 
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+//             {'Copyright © '}
+//             <Link color="inherit" href="https://mui.com/">
+//                 Your Website
+//             </Link>{' '}
+//             {new Date().getFullYear()}
+//             {'.'}
+//         </Typography>
+//     );
+// }
 
 const theme = createTheme();
 
 function SignIn(props) {
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // console.log({
-        //   email: data.get('email'),
-        //   password: data.get('password'),
-        // });
-
-        event.preventDefault()
         const loggedUser = {
             email: event.target.email.value,
             password: event.target.password.value,
             from: "signin"
         }
-
-        props.signInUser(loggedUser)
-
-
-
+        props.signInUser(loggedUser);
     };
-
-    return (
+    if (props.user) //se l'usuario è connesso allora vai a home invece di farmi restare nella pagina del form
+        window.location.href = '/';
+    return props.user ? (<h1 className='message'>Redirecting...</h1>) : (
 
         <ThemeProvider theme={theme}>
 
@@ -91,6 +82,7 @@ function SignIn(props) {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            value="chantal.trc@gmail.com"//TODO: Remove this line!!!!!!!!!!!remembeeeer
                         />
                         <TextField
                             margin="normal"
@@ -101,6 +93,7 @@ function SignIn(props) {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            value="12345678"//TODO: Remove this line!!!!!!!!!!!remembeeeer
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
@@ -133,5 +126,10 @@ function SignIn(props) {
         </ThemeProvider>
     );
 }
-
-export default connect(null, userActions)(SignIn)
+const mapStateToProps = (state) => {
+    return {
+        message: state.userReducer.message,
+        user: state.userReducer.user
+    }
+}
+export default connect(mapStateToProps, userActions)(SignIn);

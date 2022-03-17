@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CustomAppBar from './CustomAppBar'
 import Home from './pages/Home';
@@ -6,7 +7,10 @@ import Footer from './Footer';
 import City from './pages/City';
 import SignUp from "./users/SignUp";
 import SignIn from "./users/SignIn";
-import { Snackbar } from '@mui/material';
+import Snackbar from "./Snackbar";
+import userActions from '../redux/actions/userActions';
+import { connect } from "react-redux"
+
 
 import {
   BrowserRouter as Router,
@@ -27,7 +31,15 @@ const theme = createTheme({
   },
 });
 
-export default function App() {
+function App(props) {
+  useEffect(() => {
+
+    if (localStorage.getItem('token') !== null) {
+      const token = localStorage.getItem("token")
+      if (token)
+        props.VerificarToken(token)
+    }
+  }, [])
   return (
 
     <Router>
@@ -48,4 +60,11 @@ export default function App() {
     </Router>
   );
 }
+const mapDispatchToProps = {
+  VerificarToken: userActions.VerificarToken,
 
+}
+
+
+
+export default connect(null, mapDispatchToProps)(App);

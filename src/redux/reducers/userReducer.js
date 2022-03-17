@@ -6,14 +6,12 @@ const initialState = {
         message: '',
         success: false
     },
-
 }
 
 const userReducer = (state = initialState, action) => {
 
-
     switch (action.type) {
-        case 'user':
+        case 'user': ///potrebbe essere user/signin?!?!?
             return {
                 ...state,
                 user: action.payload,
@@ -23,7 +21,11 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 snackbar: action.payload,
             }
-
+        case 'user/signout':
+            return {
+                ...state,
+                user: null
+            }
         default:
             return state
     }

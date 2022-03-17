@@ -1,9 +1,10 @@
-const User = require('../models/user')
+const User = require('../models/User')
 const bcryptjs = require('bcryptjs')
 const crypto = require('crypto')        //NPM CRYPTO
 const nodemailer = require('nodemailer') //NPM NODEMAILER
 const jwt = require('jsonwebtoken')
 
+// C!h#A$n%T&a/L(p)I=l?I*a
 
 
 const sendEmail = async (email, uniqueString) => { //FUNCION ENCARGADA DE ENVIAR EL EMAIL
@@ -63,13 +64,17 @@ const usersControllers = {
 
     signUpUsers: async (req, res) => {
         let { firstName, lastName, email, password, picture, country, from } = req.body.userData
+        const test = req.body.test
+
         try {
 
             const usuarioExiste = await User.findOne({ email }) //cerca se l'usuario esiste nella base de datos/due condizioni se l'usuario esiste
 
             if (usuarioExiste) {
                 console.log(usuarioExiste.from.indexOf(from))
+
                 if (usuarioExiste.from.indexOf(from) !== -1) { //INDEXOF = 0 EL VALOR EXISTE EN EL INDICE EQ A TRUE -1 NO EXITE EQ A FALSE
+                    console.log("resultado de if " + (usuarioExiste.from.indexOf(from) !== 0))
                     res.json({
                         success: false,
                         from: "signup",
@@ -91,7 +96,7 @@ const usersControllers = {
                             message: "Te enviamos un email para validarlo, por favor verifica tu casilla para completar el signUp y agregarlo a tus metodos de SignIN "
                         })
                     } else {
-                        await usuarioExiste.save()
+                        usuarioExiste.save()
 
                         res.json({
                             success: true,
@@ -144,9 +149,10 @@ const usersControllers = {
     signInUser: async (req, res) => {
 
         const { email, password, from } = req.body.loggedUser
+        console.log(req.body)
         try {
             const usuarioExiste = await User.findOne({ email })
-
+            const indexpass = usuarioExiste.from.indexOf(from)
             if (!usuarioExiste) {// PRIMERO VERIFICA QUE EL USUARIO EXISTA
                 res.json({ success: false, message: "Tu usuarios no ha sido registrado realiza sign in" })
 
@@ -155,7 +161,7 @@ const usersControllers = {
 
                     let contraseñaCoincide = usuarioExiste.password.filter(pass => bcryptjs.compareSync(password, pass))
 
-                    if (contraseñaCoincide.length > 0) { //TERERO VERIFICA CONTRASEÑA
+                    if (contraseñaCoincide.length > 0) { //TERCERO VERIFICA CONTRASEÑA
 
                         const userData = {
                             id: usuarioExiste._id,
@@ -172,7 +178,7 @@ const usersControllers = {
                             success: true,
                             from: from,
                             response: { token, userData },
-                            message: "Bienvenido nuevamente " + userData.fullName,
+                            message: "Bienvenido nuevamente " + userData.firstName,
                         })
 
                     } else {
@@ -189,8 +195,10 @@ const usersControllers = {
 
                             const userData = {
                                 id: usuarioExiste._id,
-                                firstName: usuarioExiste.firstlName,
+                                firstName: usuarioExiste.firstName,
+                                lastName: usuarioExiste.lastName,
                                 email: usuarioExiste.email,
+                                picture: usuarioExiste.picture,
                                 from: usuarioExiste.from
                             }
                             const token = jwt.sign({ ...userData }, process.env.SECRET_KEY, { expiresIn: 60 * 60 * 24 })
@@ -223,13 +231,42 @@ const usersControllers = {
             res.json({ success: false, message: "Algo a salido mal intentalo en unos minutos" })
         }
     },
-    signOutUser: async (req, res) => {
 
-        const email = req.body.closeuser
-        const user = await User.findOne({ email })
-        await user.save()
-        res.json(console.log('sesion cerrada ' + email))
+    /////
+    signOutUser: async (req, res) => {
+        const email = req.body.closeuser // se obtiene la email 
+        const usuarioExiste = await User.findOne({ email });
+        const userData = usuarioExiste ? {
+            id: usuarioExiste._id,
+            firstName: usuarioExiste.firstName,
+            lastName: usuarioExiste.lastName,
+            email: usuarioExiste.email,
+            picture: usuarioExiste.picture,
+            from: usuarioExiste.from
+        } : null;
+        res.json({
+            success: usuarioExiste ? true : false,
+            message: usuarioExiste ? 'Sesion cerrada ' + email : 'El usuario no está registrado.',
+            response: { userData }
+        })
     },
+    //////per mantenere la sessione 
+    verificarToken: (req, res) => {
+        console.log(req.user)
+        if (!req.err) {
+            res.json({
+                success: true,
+                response: { id: req.user.id, firstName: req.user.firstName, lastName: req.user.lastName, picture: req.user.picture, email: req.user.email, from: "token" },
+                message: "Bienvenido nuevamente " + req.user.firstName
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "Por favor realiza nuevamente signIn"
+            })
+        }
+    }
+
 
 }
 module.exports = usersControllers
