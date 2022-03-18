@@ -31,38 +31,37 @@ const userActions = {
                     type: 'user',
                     payload: user.data.response.userData
                 });
-                dispatch({
-                    type: 'message',
-                    payload: {
-                        view: true,
-                        message: user.data.message,
-                        success: user.data.success
-                    }
-                });
-            } else { console.log(user.data.message) }
+            }
+            dispatch({
+                type: 'message',
+                payload: {
+                    view: true,
+                    message: user.data.message,
+                    success: user.data.success
+                }
+            });
         }
     },
-    ////
+
     signOutUser: (closeuser) => {
         return async (dispatch, getState) => {
             const user = await axios.post(url + '/api/auth/signout', { closeuser })
             if (user.data.success) {
                 localStorage.removeItem("token");
                 dispatch({ type: 'user/signout', payload: user.data.response.userData });
-                dispatch({
-                    type: 'message',
-                    payload: {
-                        view: true,
-                        message: user.data.message,
-                        success: user.data.success
-                    }
-                });
-            } else { console.log(user.data.message) }
+            }
+            dispatch({
+                type: 'message',
+                payload: {
+                    view: true,
+                    message: user.data.message,
+                    success: user.data.success
+                }
+            });
         }
     },
 
     VerificarToken: (token) => {
-
         return async (dispatch, getState) => {
             console.log(token)
             const user = await axios.get('http://localhost:4000/api/auth/signInToken', {
@@ -73,18 +72,17 @@ const userActions = {
             if (user.data.success) {
                 console.log(user)
                 dispatch({ type: 'user', payload: user.data.response });
-                dispatch({
-                    type: 'message',
-                    payload: {
-                        view: true,
-                        message: user.data.message,
-                        success: user.data.success
-                    }
-                });
             } else {
                 localStorage.removeItem('token')
             }
-
+            dispatch({
+                type: 'message',
+                payload: {
+                    view: true,
+                    message: user.data.message,
+                    success: user.data.success
+                }
+            });
         }
     }
 

@@ -16,23 +16,9 @@ import { connect } from 'react-redux';
 import userActions from "../../redux/actions/userActions";
 import HeroImage from '../HeroImage';
 import api from '../../api';
-
-// function Copyright(props) {
-//     return (
-
-
-//         <Typography variant="body2" color="text.secondary" align="center" {...props}>
-
-
-//             {'Copyright © '}
-//             <Link color="inherit" href="https://mui.com/">
-//                 Your Website
-//             </Link>{' '}
-//             {new Date().getFullYear()}
-//             {'.'}
-//         </Typography>
-//     );
-// }
+import FacebookSignIn from '../FacebookSignIn';
+import GoogleSignIn from './GoogleSignIn';
+import '../styles/StyleSign.css'
 
 const theme = createTheme();
 
@@ -53,9 +39,10 @@ function SignIn(props) {
 
         <ThemeProvider theme={theme}>
 
-            <HeroImage image={api.url + "/images/piemonte.jpg"}></HeroImage>
+            <HeroImage image={api.url + "/images/Italy.form1.jpg"}></HeroImage>
 
             <Container component="main" maxWidth="xs">
+
                 <CssBaseline />
                 <Box
                     sx={{
@@ -72,6 +59,8 @@ function SignIn(props) {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
+                    <FacebookSignIn />
+                    <GoogleSignIn />
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -82,7 +71,7 @@ function SignIn(props) {
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            value="chantal.trc@gmail.com"//TODO: Remove this line!!!!!!!!!!!remembeeeer
+
                         />
                         <TextField
                             margin="normal"
@@ -93,12 +82,12 @@ function SignIn(props) {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            value="12345678"//TODO: Remove this line!!!!!!!!!!!remembeeeer
+                        //TODO: Remove this line!!!!!!!!!!!remembeeeer
                         />
-                        <FormControlLabel
+                        {/* <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
-                        />
+                        /> */}
                         <Button
                             type="submit"
                             fullWidth
@@ -108,13 +97,13 @@ function SignIn(props) {
                             Sign In
                         </Button>
                         <Grid container>
-                            <Grid item xs>
+                            {/* <Grid item xs>
                                 <Link to="#">
                                     Forgot password?
                                 </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link to="/signup">
+                            </Grid> */}
+                            <Grid className="link_b" item>
+                                <Link style={{ textDecoration: 'none' }} to="/signup">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

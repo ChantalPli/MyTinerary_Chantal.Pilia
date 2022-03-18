@@ -48,8 +48,11 @@ function App(props) {
         <CustomAppBar />
       </ThemeProvider>
       <Routes>
+        {/* {!props.user && <Route exact path="/signin" element={<SignIn />} />}
+        {!props.user && <Route exact path="/signup" element={<SignUp />} />} */}
         <Route exact path="/signin" element={<SignIn />} />
         <Route exact path="/signup" element={<SignUp />} />
+        {/* <Route exact path="/signup" element={<SignUp />} /> */}
         <Route exact path="/cities/:id" element={<City />} />
         <Route exact path="/cities" element={<Cities />} />
         <Route exact path="/home" element={<Home />} />
@@ -65,6 +68,16 @@ const mapDispatchToProps = {
 
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer.user
+  }
 
 
-export default connect(null, mapDispatchToProps)(App);
+}
+
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

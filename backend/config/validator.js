@@ -6,8 +6,8 @@ const validator = (req, res, next) => {
             'string.min': 'firstName / Please, enter a NAME that is at least 3 characters long',
             'string.max': "firstName / El nombre debe contener como maximo 20 caracteres"
         }),
-        lastName: joi.string().max(20).min(3).trim().pattern(new RegExp('^([a-z]+)( [a-z]+)*$', 'i')).required().messages({
-            'string.min': 'lastName / El cognome debe contener mas de 3 caracteres',
+        lastName: joi.string().max(20).min(2).trim().pattern(new RegExp('^([a-z]+)( [a-z]+)*$', 'i')).required().messages({
+            // 'string.min': 'lastName / El cognome debe contener mas de 3 caracteres',
             'string.max': "lastName / El cognome debe contener como maximo 20 caracteres"
             //^([a-z]+)( [a-z]+)*$
         }),

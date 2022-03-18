@@ -27,7 +27,7 @@ const sendEmail = async (email, uniqueString) => { //FUNCION ENCARGADA DE ENVIAR
         subject: "Verificacion de email usuario ", //EL ASUNTO Y EN HTML EL TEMPLATE PARA EL CUERPO DE EMAIL Y EL LINK DE VERIFICACION
         html: `
         <div >
-        <h1 style="color:red">Presiona <a href=http://localhost:4000/api/verify/${uniqueString}>aqui</a> para confirma tu email. Gracias </h1>
+        <h1 style="color:red">To verify your email please press <a href=http://localhost:4000/api/verify/${uniqueString}>here</a> para confirma tu email. Thank you! </h1>
         </div>
         `
 
@@ -35,7 +35,7 @@ const sendEmail = async (email, uniqueString) => { //FUNCION ENCARGADA DE ENVIAR
     await transporter.sendMail(mailOptions, function (error, response) { //SE REALIZA EL ENVIO
         if (error) { console.log(error) }
         else {
-            console.log("Mensaje enviado")
+            console.log("Message sent")
 
         }
     })
@@ -58,7 +58,7 @@ const usersControllers = {
             res.redirect("http://localhost:3000/") //REDIRECCIONA AL USUARIO A UNA RUTA DEFINIDA
             //return  res.json({success:true, response:"Su email se ha verificado correctamente"})
         }
-        else { res.json({ success: false, response: "Su email no se ha verificado" }) }
+        else { res.json({ success: false, response: "We couldn't verify your email" }) }
     },
 
 
@@ -78,7 +78,7 @@ const usersControllers = {
                     res.json({
                         success: false,
                         from: "signup",
-                        message: "Ya has realizado tu SignUp de esta forma por favor realiza SignIn"
+                        message: "Looks like you've already Signed Up. Please, Sign In"
                     })
                 } else {
                     const contraseñaHasheada = bcryptjs.hashSync(password, 10)
@@ -93,7 +93,7 @@ const usersControllers = {
                         res.json({
                             success: true,
                             from: "signup", //RESPONDE CON EL TOKEN Y EL NUEVO USUARIO
-                            message: "Te enviamos un email para validarlo, por favor verifica tu casilla para completar el signUp y agregarlo a tus metodos de SignIN "
+                            message: "A confirmation email has been sent to you. Please confirm it to proceed with Sign In."
                         })
                     } else {
                         usuarioExiste.save()
@@ -101,7 +101,7 @@ const usersControllers = {
                         res.json({
                             success: true,
                             from: "signup",
-                            message: "Agregamos " + from + " a tus medios para realizar signIn"
+                            message: "You can now sign in with " + from
                         })
                     }// EN ESTE PUNTO SI EXITE RESPONDE FALSE
                 }
@@ -127,7 +127,7 @@ const usersControllers = {
                     res.json({
                         success: true,
                         from: "signup",
-                        message: "Felicitaciones se ha creado tu usuario con " + from
+                        message: "Your account with " + from + " has been successfully created!"
                     }) // AGREGAMOS MENSAJE DE VERIFICACION
                 } else {
                     //PASAR EMAIL VERIFICADO A FALSE
@@ -137,13 +137,13 @@ const usersControllers = {
                     res.json({
                         success: true,
                         from: "signup",
-                        message: "Te enviamos un email para validarlo, por favor verifica tu casilla para completar el signUp "
+                        message: "We sent you an email to verify your account. Please check your inbox!"
                     }) // AGREGAMOS MENSAJE DE VERIFICACION
                 }
             }
         } catch (error) {
             console.log(error)
-            res.json({ success: false, message: "Algo a salido mal intentalo en unos minutos" }) //CAPTURA EL ERROR
+            res.json({ success: false, message: "Oh Snap! An error has occured, please try again." }) //CAPTURA EL ERROR
         }
     },
     signInUser: async (req, res) => {
@@ -154,7 +154,7 @@ const usersControllers = {
             const usuarioExiste = await User.findOne({ email })
             const indexpass = usuarioExiste.from.indexOf(from)
             if (!usuarioExiste) {// PRIMERO VERIFICA QUE EL USUARIO EXISTA
-                res.json({ success: false, message: "Tu usuarios no ha sido registrado realiza sign in" })
+                res.json({ success: false, message: "We couldn't find an account with that email address. Please, sign up. " })
 
             } else {
                 if (from !== "signin") {
@@ -178,14 +178,14 @@ const usersControllers = {
                             success: true,
                             from: from,
                             response: { token, userData },
-                            message: "Bienvenido nuevamente " + userData.firstName,
+                            message: "Welcome back " + userData.firstName,
                         })
 
                     } else {
                         res.json({
                             success: false,
                             from: from,
-                            message: "No has realizado el registro con " + from + "si quieres ingresar con este metodo debes hacer el signUp con " + from
+                            message: "It looks like you never signed up with  " + from + "before. You need to comsi quieres ingresar con este metodo debes hacer el signUp con " + from
                         })
                     }
                 } else {
@@ -206,20 +206,20 @@ const usersControllers = {
                                 success: true,
                                 from: from,
                                 response: { token, userData },
-                                message: "Bienvenido nuevamente " + userData.firstName,
+                                message: "Welcome back " + userData.firstName,
                             })
                         } else {
                             res.json({
                                 success: false,
                                 from: from,
-                                message: "El usuario o el password no coinciden",
+                                message: "Something went wrong...username and password don't match",
                             })
                         }
                     } else {
                         res.json({
                             success: false,
                             from: from,
-                            message: "No has verificado tu email, por favor verifica ti casilla de emails para completar tu signUp"
+                            message: "To complete the signup you need to confirm your email address by clicking on the link in the confirmation email we sent to you.  "
                         })
                     }
 
@@ -228,7 +228,7 @@ const usersControllers = {
 
         } catch (error) {
             console.log(error);
-            res.json({ success: false, message: "Algo a salido mal intentalo en unos minutos" })
+            res.json({ success: false, message: "Oh snap! Something went wrong...try again in a few seconds." })
         }
     },
 
@@ -246,7 +246,7 @@ const usersControllers = {
         } : null;
         res.json({
             success: usuarioExiste ? true : false,
-            message: usuarioExiste ? 'Sesion cerrada ' + email : 'El usuario no está registrado.',
+            message: usuarioExiste ? 'Session closed ' + email : 'Not a registered user.',
             response: { userData }
         })
     },
@@ -257,12 +257,12 @@ const usersControllers = {
             res.json({
                 success: true,
                 response: { id: req.user.id, firstName: req.user.firstName, lastName: req.user.lastName, picture: req.user.picture, email: req.user.email, from: "token" },
-                message: "Bienvenido nuevamente " + req.user.firstName
+                message: "Welcome back " + req.user.firstName
             })
         } else {
             res.json({
                 success: false,
-                message: "Por favor realiza nuevamente signIn"
+                message: "Please, sign in again"
             })
         }
     }
