@@ -78,7 +78,7 @@ const usersControllers = {
                     res.json({
                         success: false,
                         from: "signup",
-                        message: "Looks like you've already Signed Up. Please, Sign In"
+                        message: "Looks like you are already signed up. Please, sign in"
                     })
                 } else {
                     const contraseñaHasheada = bcryptjs.hashSync(password, 10)

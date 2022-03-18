@@ -3,20 +3,20 @@ const joi = require('joi');
 const validator = (req, res, next) => {
     const schema = joi.object({
         firstName: joi.string().max(20).min(3).trim().pattern(new RegExp('^([a-z]+)( [a-z]+)*$', 'i')).required().messages({
-            'string.min': 'firstName / Please, enter a NAME that is at least 3 characters long',
-            'string.max': "firstName / El nombre debe contener como maximo 20 caracteres"
+            'string.min': 'firstName / Please, enter a name that is at least 3 characters long',
+            'string.max': "firstName / Your name should contain a maximum of 20 characters"
         }),
         lastName: joi.string().max(20).min(2).trim().pattern(new RegExp('^([a-z]+)( [a-z]+)*$', 'i')).required().messages({
-            // 'string.min': 'lastName / El cognome debe contener mas de 3 caracteres',
-            'string.max': "lastName / El cognome debe contener como maximo 20 caracteres"
+            // 'string.min': 'lastName / Your lastname  should contain at least 2 characters',
+            'string.max': "lastName / Your last name should contain a maximum of 20 characters"
             //^([a-z]+)( [a-z]+)*$
         }),
         email: joi.string().email({ minDomainSegments: 2 }).required().messages({
-            'string.email': 'Formato incorrecto de email'
+            'string.email': 'Invalid email address format'
         }),
         password: joi.string().pattern(new RegExp('[a-zA-Z0-9]')).required().trim().min(8).max(30).messages({
-            'string.min': 'El password debe contener minimo 8 caracteres y contener mayuscula, minuscula y numero',
-            'string.pattern': "El password debe ser alphanumerico y contener un numero"
+            'string.min': 'Your password should be at least 8 characters long and it should contain  lowercase, uppercase and numbers',
+            'string.pattern': "Your password should be alphanumeric with at least 1 number"
         }),
         picture: joi.string(),
         country: joi.string(),
