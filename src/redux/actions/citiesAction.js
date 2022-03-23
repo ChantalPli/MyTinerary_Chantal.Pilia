@@ -10,16 +10,25 @@ const citiesAction = {
         }
     },
 
-    fetchCity: (id, fetchItineraries = false) => {
+    fetchCity: (id, loadItineraries = false, loadActivities = false) => { // loadActivities si usa quando loadItin es = true//si ponemos activities true y itin es false se ignora activities
         return async (dispatch, getState) => {
             const responseCity = await api.fetchCity(id);
             if (responseCity.data.success) {
                 const city = responseCity.data.content.city;
                 city.itineraries = [];
-                if (fetchItineraries) {
+                if (loadItineraries) {
                     const responseItineraries = await api.fetchItineraries({ city: id });
                     if (responseItineraries.data.success) {
                         city.itineraries = responseItineraries.data.content.itineraries;
+                        //------------ACTIVITIES FOREACH ITINERARY----------/////
+                        if (loadActivities) {
+                            city.itineraries.forEach(async (itinerary) => {
+                                const responseActivities = await api.fetchActivities({ itinerary: itinerary._id });
+                                if (responseActivities.data.success) {
+                                    itinerary.activities = responseActivities.data.content.activities;
+                                }
+                            })
+                        }
                     }
                 }
                 dispatch({ type: 'cities/fetch-one', payload: city });

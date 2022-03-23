@@ -8,12 +8,12 @@ function GoogleSignIn(props) {
 
     const responseGoogle = async (res) => {
         console.log(res)
-        const loggedUser = {
+        const loggedUser = { //creamos un objeto con estos datos 
             email: res.profileObj.email,
             password: res.profileObj.googleId,
             from: "google"
         }
-        await props.signInUser(loggedUser)
+        await props.signInUser(loggedUser)// le pasamos una funcion que viene de las actions 
     }
 
     return (

@@ -17,8 +17,12 @@ import './styles/Itinerary.css'
 import { Link } from "react-router-dom"
 import { Button } from '@mui/material';
 import Chip from '@mui/material/Chip';
-import { WatchLater } from "@mui/icons-material";
+import { CenterFocusStrong, WatchLater } from "@mui/icons-material";
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import { withWidth } from "@material-ui/core";
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -37,7 +41,7 @@ export default function Itinerary(props) {
         setExpanded(!expanded);
     };
     return (
-        <Card className="itinerary" sx={{ maxWidth: 800 }}>
+        <Card className="itinerary" sx={{ maxWidth: 950 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -100,19 +104,33 @@ export default function Itinerary(props) {
             </CardActions>
             <Collapse className="collapse" in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography paragraph>Tour:</Typography>
-                    <Typography paragraph>
-
-                    </Typography>
-                    <Typography paragraph>
-                        UNDER CONSTRUCTION
-                    </Typography>
-                    <Typography paragraph>
-                        UNDER CONSTRUCTION
-                    </Typography>
-                    <Typography>
-                        UNDER CONSTRUCTION
-                    </Typography>
+                    {props.data.activities.length === 0 ? (<h5>No Activities</h5>) : (<Box
+                        sx={{
+                            display: 'flex',
+                            flexWrap: 'no-wrap',
+                            '& > :not(style)': {
+                                m: 1,
+                                width: 300,
+                                height: 300,
+                                //backgroundImage: 
+                            },
+                        }}
+                    >
+                        {props.data.activities.map(activity => <Paper sx={{ overflow: "hidden", position: "relative" }} key={activity._id} elevation={3}>
+                            <img style={{ maxWidth: "100%" }} src={api.url + activity.image} />
+                            <span style={{
+                                position: "absolute",
+                                backgroundColor: "rgba(0, 0, 0, .75)",
+                                borderRadius: 4,
+                                left: 8,
+                                right: 8,
+                                bottom: 8,
+                                padding: 8,
+                                textAlign: "center",
+                                color: "white",
+                            }}>{activity.name}</span>
+                        </Paper>)}
+                    </Box>)}
                 </CardContent>
             </Collapse>
         </Card>

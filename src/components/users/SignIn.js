@@ -24,14 +24,14 @@ const theme = createTheme();
 
 function SignIn(props) {
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event) => { // cargo los datos 
         event.preventDefault();
-        const loggedUser = {
+        const loggedUser = {  // creamos objetos con estos datos 
             email: event.target.email.value,
             password: event.target.password.value,
             from: "signin"
         }
-        props.signInUser(loggedUser);
+        props.signInUser(loggedUser); //los pasamos a una funcion que viene de las actions 
     };
     if (props.user) //se l'usuario è connesso allora vai a home invece di farmi restare nella pagina del form
         window.location.href = '/';

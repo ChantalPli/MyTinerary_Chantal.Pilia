@@ -10,7 +10,7 @@ function GoogleSignUp(props) {
 
         console.log(res)
 
-        const userData = {
+        const userData = { //creamos un objeto con todos estos datos
             firstName: res.profileObj.givenName,
             lastName: res.profileObj.familyName,
             email: res.profileObj.email,
@@ -19,7 +19,7 @@ function GoogleSignUp(props) {
             country: props.country,
             from: "google"
         }
-        await props.signUpUser(userData)
+        await props.signUpUser(userData) // le pasamos una funcion que viene de las actions 
     }
 
     return (

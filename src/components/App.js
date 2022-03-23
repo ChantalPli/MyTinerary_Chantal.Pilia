@@ -9,7 +9,8 @@ import SignUp from "./users/SignUp";
 import SignIn from "./users/SignIn";
 import Snackbar from "./Snackbar";
 import userActions from '../redux/actions/userActions';
-import { connect } from "react-redux"
+import { connect } from "react-redux";
+
 
 
 import {

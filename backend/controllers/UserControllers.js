@@ -63,18 +63,18 @@ const usersControllers = {
 
 
     signUpUsers: async (req, res) => {
-        let { firstName, lastName, email, password, picture, country, from } = req.body.userData
-        const test = req.body.test
+        let { firstName, lastName, email, password, picture, country, from } = req.body.userData  //hago destruc. de userData
+        const test = req.body.test //chiedere!
 
         try {
 
             const usuarioExiste = await User.findOne({ email }) //cerca se l'usuario esiste nella base de datos/due condizioni se l'usuario esiste
 
             if (usuarioExiste) {
-                console.log(usuarioExiste.from.indexOf(from))
+                // console.log(usuarioExiste.from.indexOf(from))
 
                 if (usuarioExiste.from.indexOf(from) !== -1) { //INDEXOF = 0 EL VALOR EXISTE EN EL INDICE EQ A TRUE -1 NO EXITE EQ A FALSE
-                    console.log("resultado de if " + (usuarioExiste.from.indexOf(from) !== 0))
+                    //console.log("resultado de if " + (usuarioExiste.from.indexOf(from) !== 0))
                     res.json({
                         success: false,
                         from: "signup",
@@ -82,34 +82,34 @@ const usersControllers = {
                     })
                 } else {
                     const contraseñaHasheada = bcryptjs.hashSync(password, 10)
-
                     usuarioExiste.from.push(from)
                     usuarioExiste.password.push(contraseñaHasheada)
+
                     if (from === "signup") {
-                        //PORSTERIORMENTE AGREGAREMOS LA VERIFICACION DE EMAIL
+
                         usuarioExiste.uniqueString = crypto.randomBytes(15).toString('hex')
                         await usuarioExiste.save()
                         await sendEmail(email, usuarioExiste.uniqueString) //LLAMA A LA FUNCION ENCARGADA DEL ENVIO DEL CORREO ELECTRONICO
                         res.json({
                             success: true,
-                            from: "signup", //RESPONDE CON EL TOKEN Y EL NUEVO USUARIO
+                            from: "signup",
                             message: "A confirmation email has been sent to you. Please confirm it to proceed with Sign In."
                         })
                     } else {
-                        usuarioExiste.save()
+                        usuarioExiste.save() // si el id viene de otro form ...
 
                         res.json({
                             success: true,
-                            from: "signup",
+                            from: "signup", //viene de otro from non da signup!!!!
                             message: "You can now sign in with " + from
                         })
                     }// EN ESTE PUNTO SI EXITE RESPONDE FALSE
                 }
             } else {
                 //SI EL USUARIO NO ESXITE
-                const contraseñaHasheada = bcryptjs.hashSync(password, 10) //LO CREA Y ENCRIPTA LA CONTRASEÑA
+                const contraseñaHasheada = bcryptjs.hashSync(password, 10) //encriptamos la password
                 // CREA UN NUEVO OBJETO DE PERSONAS CON SU USUARIO Y CONTRASEÑA (YA ENCRIPTADA)
-                const nuevoUsuario = await new User({
+                const nuevoUsuario = await new User({ //creamos un modelo para el nuevo usuario que tendra los datos que el modelo requiere
                     firstName,
                     lastName,
                     email,
@@ -122,8 +122,8 @@ const usersControllers = {
 
                 })
                 //SE LO ASIGNA AL USUARIO NUEVO
-                if (from !== "signup") { //SI LA PETICION PROVIENE DE CUENTA GOOGLE
-                    await nuevoUsuario.save()
+                if (from !== "signup") { //SI LA PETICION PROVIENE DE CUENTA GOOGLE y no del formulario
+                    await nuevoUsuario.save() //guardamos el valor en la base de datos y damos una respuesta (message)
                     res.json({
                         success: true,
                         from: "signup",
@@ -150,18 +150,18 @@ const usersControllers = {
 
         const { email, password, from } = req.body.loggedUser
         console.log(req.body)
-        try {
-            const usuarioExiste = await User.findOne({ email })
-            const indexpass = usuarioExiste.from.indexOf(from)
-            if (!usuarioExiste) {// PRIMERO VERIFICA QUE EL USUARIO EXISTA
+        try { //busca si el usuario existe, lo busca por email
+            const usuarioExiste = await User.findOne({ email }) // busca email en base de dque coincida con el email que se acaba de enviar 
+            // const indexpass = usuarioExiste.from.indexOf(from)
+            if (!usuarioExiste) {// si el usuario NO existe -PRIMERO VERIFICA QUE EL USUARIO EXISTA
                 res.json({ success: false, message: "We couldn't find an account with that email address. Please, sign up. " })
 
             } else {
-                if (from !== "signin") {
+                if (from !== "signin") { // si existe y viene de google o fb se pide verificacion adicional
 
                     let contraseñaCoincide = usuarioExiste.password.filter(pass => bcryptjs.compareSync(password, pass))
 
-                    if (contraseñaCoincide.length > 0) { //TERCERO VERIFICA CONTRASEÑA
+                    if (contraseñaCoincide.length > 0) { //TERCERO VERIFICA CONTRASEÑA / verificamos la coincidencia con la password
 
                         const userData = {
                             id: usuarioExiste._id,
@@ -171,7 +171,7 @@ const usersControllers = {
                             email: usuarioExiste.email,
                             from: usuarioExiste.from
                         }
-                        await usuarioExiste.save()
+                        await usuarioExiste.save() // si se registro por fb o google realiza un metodo para guardar en nuestro array una password encriptada; se toma en cuenta el id del usuario, con este creamos una password ficticia 
 
                         const token = jwt.sign({ ...userData }, process.env.SECRET_KEY, { expiresIn: 60 * 60 * 24 })
                         res.json({
@@ -188,10 +188,10 @@ const usersControllers = {
                             message: "It looks like you never signed up with  " + from + "before. You need to comsi quieres ingresar con este metodo debes hacer el signUp con " + from
                         })
                     }
-                } else {
-                    if (usuarioExiste.emailVerified) {
+                } else { //viene del signin 
+                    if (usuarioExiste.emailVerified) { //y el email esta verificado
                         let contraseñaCoincide = usuarioExiste.password.filter(pass => bcryptjs.compareSync(password, pass))
-                        if (contraseñaCoincide.length > 0) {
+                        if (contraseñaCoincide.length > 0) { //el usuario vino por un medio diferente al formulario y la password existe o sea el usuario ya esta registrado con este medio 
 
                             const userData = {
                                 id: usuarioExiste._id,
@@ -208,14 +208,14 @@ const usersControllers = {
                                 response: { token, userData },
                                 message: "Welcome back " + userData.firstName,
                             })
-                        } else {
-                            res.json({
+                        } else { // si la password no coincide
+                            res.json({ //si es diferente al signin y la password no esta guardada entonces el usuario no esta logueado con este medio y le damos una respuesta de tipo false
                                 success: false,
                                 from: from,
                                 message: "Something went wrong...username and password don't match",
                             })
                         }
-                    } else {
+                    } else { // si el correo no esta verificado se invita al user que lo verifique 
                         res.json({
                             success: false,
                             from: from,
@@ -232,7 +232,7 @@ const usersControllers = {
         }
     },
 
-    /////
+
     signOutUser: async (req, res) => {
         const email = req.body.closeuser // se obtiene la email 
         const usuarioExiste = await User.findOne({ email });
@@ -246,7 +246,7 @@ const usersControllers = {
         } : null;
         res.json({
             success: usuarioExiste ? true : false,
-            message: usuarioExiste ? 'Session closed ' + email : 'Not a registered user.',
+            message: usuarioExiste ? 'Session closed ' + email : 'Not a registered user.',//fatto prima di nascondere il tasto del signout 
             response: { userData }
         })
     },

@@ -8,6 +8,7 @@ import Itinerary from "../Itinerary";
 import { connect, } from 'react-redux';
 import citiesAction from '../../redux/actions/citiesAction';
 
+
 import '../styles/City.css';
 
 function City(props) {
@@ -30,7 +31,7 @@ function City(props) {
     // const dispatch = useDispatch();
     useEffect(() => {
         if (!ready || city._id !== id)
-            fetchCity(id, true);
+            fetchCity(id, true, true);
     }, [ready, fetchCity, id]);
     return (
         !ready || city._id !== id ? (<h1 className="message">Loading...</h1>) :

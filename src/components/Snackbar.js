@@ -33,7 +33,7 @@ function Snack(props) {
 
   const classes = useStyles();
 
-  const handleClose = () => {
+  const handleClose = () => { //es lo que vamos a emitir en cada card; la view puede ser true or false dependiendo de si se va a visualizar el mensaje,
     dispatch({
       type: 'message',
       payload: {

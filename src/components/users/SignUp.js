@@ -37,7 +37,7 @@ function SignUp(props) {
                 password: event.target.password.value,
                 picture: event.target.picture.value,
                 country: event.target.country.value,
-                from: "signup"
+                from: "signup" // envia al back es userdata
             };
 
             props.signUpUser(userData);
@@ -75,7 +75,7 @@ function SignUp(props) {
                         </Typography>
                         <FacebookSignUp />
                         <GoogleSignUp />
-                        {hideForm ? null : (
+                        {hideForm ? null : (  //si el formulario esta oculto allora non visualizzare niente altrimenti mi visualizzi quello c'e sotto 
                             <>
                                 <Grid container spacing={2}>
 

@@ -7,7 +7,7 @@ const activityController = {
     fetchActivities: async (request, response) => {
         let result, error = null;
         try {
-            result = await Activity.find();
+            result = await Activity.find(request.query);// para filtrar las actividades
         } catch (error) {
             console.log(error);
         }

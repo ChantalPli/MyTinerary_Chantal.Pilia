@@ -27,7 +27,15 @@ function fetchItineraries(queryObject) {
     return axios.get(url + '/api/itineraries' + queryString);
 }
 
-module.exports = { url, fetchCities, fetchCity, fetchItineraries };
+function fetchActivities(queryObject) {
+    let queryString = '';
+    if (queryObject) {
+        queryString = '?' + new URLSearchParams(queryObject).toString();
+    }
+    return axios.get(url + '/api/activities' + queryString);
+}
+
+module.exports = { url, fetchCities, fetchCity, fetchItineraries, fetchActivities };
 
 // https://stackoverflow.com/questions/1714786/query-string-encoding-of-a-javascript-object
 // queryString = '?' + Object.entries(queryObject).map(([key, value]) => key + '=' + value).join('&');

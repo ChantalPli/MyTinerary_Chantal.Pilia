@@ -1,6 +1,6 @@
 const initialState = {
     message: null,
-    user: null,
+    user: null, // null/ para poder establecer un valor de renderizado
     snackbar: {
         view: false,
         message: '',
@@ -11,7 +11,7 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
 
     switch (action.type) {
-        case 'user': ///potrebbe essere user/signin?!?!?
+        case 'user': ///
             return {
                 ...state,
                 user: action.payload,
