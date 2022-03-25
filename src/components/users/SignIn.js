@@ -39,7 +39,7 @@ function SignIn(props) {
 
         <ThemeProvider theme={theme}>
 
-            <HeroImage image={api.url + "/images/sardegna2.jpg"}>
+            <HeroImage image={api.url + "/images/water.jpg"}>
                 <h1>SIGN IN </h1>
             </HeroImage>
 
@@ -55,7 +55,7 @@ function SignIn(props) {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <Avatar sx={{ m: 1, bgcolor: 'blue' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
@@ -104,8 +104,8 @@ function SignIn(props) {
                                     Forgot password?
                                 </Link>
                             </Grid> */}
-                            <Grid className="link_b" item>
-                                <Link style={{ textDecoration: 'none' }} to="/signup">
+                            <Grid className="link_b" item style={{ margin: 'auto' }}>
+                                <Link style={{ color: 'black' }} to="/signup">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

@@ -10,13 +10,13 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { blue, green, red, } from '@mui/material/colors';
+import { blue, red, } from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './styles/Itinerary.css'
 import { Link } from "react-router-dom"
-import { Button, TextField, Input } from '@mui/material';
+import { Button, Input, ListItemButton } from '@mui/material';
 import Chip from '@mui/material/Chip';
-import { CenterFocusStrong, WatchLater } from "@mui/icons-material";
+import { WatchLater } from "@mui/icons-material";
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -25,12 +25,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import Divider from '@mui/material/Divider';
 import { connect } from 'react-redux';
-
+import ModeIcon from '@mui/icons-material/Mode';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
 
 
 const ExpandMore = styled((props) => {
@@ -55,7 +54,7 @@ function Itinerary(props) {
     } = props;
 
     return (
-        <Card className="itinerary" sx={{ maxWidth: 950 }}>
+        <Card className="itinerary" sx={{ maxWidth: 1000 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -81,16 +80,16 @@ function Itinerary(props) {
                     {itinerary.description}
                     <div className="details">
                         <Chip label={itinerary.duration + " hours"} icon={<WatchLater />} />
-                        {itinerary.hashtags.map(hashtag => <Link to={hashtag}>{hashtag}</Link>)}
+                        {itinerary.hashtags.map((hashtag, index) => <Link key={hashtag} to={hashtag}>{hashtag}</Link>)}
                     </div>
                     <div style={{ fontWeight: 'bold', lineHeight: '36px' }}>Price:</div>
-                    <div>{Array.from({ length: itinerary.price }, () => <LocalAtmIcon />)}</div>
+                    <div>{Array.from({ length: itinerary.price }, (_, index) => <LocalAtmIcon key={itinerary._id + '-' + index} />)}</div>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
 
                 <IconButton onClick={props.onLike} aria-label="add to favorites">
-                    <ThumbUpIcon sx={{ color: itinerary.likes.includes(props.user.id) ? blue[500] : 'inherit' }} />
+                    <ThumbUpIcon sx={{ color: user !== null && itinerary.likes.includes(user.id) ? blue[500] : 'inherit' }} />
                 </IconButton>
                 {itinerary.likes.length}
                 {/* <IconButton aria-label="share">
@@ -134,7 +133,7 @@ function Itinerary(props) {
                         }}
                     >
                         {itinerary.activities.map(activity => <Paper sx={{ overflow: "hidden", position: "relative" }} key={activity._id} elevation={3}>
-                            <img style={{ maxWidth: "100%" }} src={api.url + activity.image} />
+                            <img style={{ display: "block", objectFit: "cover", height: "100%", width: "100%" }} src={api.url + activity.image} />
                             <span style={{
                                 position: "absolute",
                                 backgroundColor: "rgba(0, 0, 0, .75)",
@@ -157,27 +156,37 @@ function Itinerary(props) {
                     bgcolor: 'background.paper',
                 }}
             >
-                {/* //////////////////// */}
                 {
                     itinerary.comments.length > 0 && itinerary.comments.map(comment =>
-                        <>
+                        <div key={comment._id}>
+                            <Divider variant="inset" component="li" />
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar alt={comment.user.firstName + " " + comment.user.lastName} src={comment.user.picture} />
                                 </ListItemAvatar>
                                 <ListItemText primary={comment.user.firstName + " " + comment.user.lastName} secondary={comment.comment} />
+                                {user && user.id === comment.user._id && (
+                                    <>
+                                        {/* <ListItemButton component={<ModeIcon />} />
+                                        <ListItemButton component={<DeleteIcon />} /> */}
+                                    </>
+                                )}
                             </ListItem>
-                            <Divider variant="inset" component="li" />
-                        </>
+                        </div>
                     )
                 }
-                {user !== null && (<ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt={user.firstName + " " + user.lastName} src={user.picture} />
-                    </ListItemAvatar>
-                    <ListItemText primary={user.firstName + " " + user.lastName} secondary={<Input fullWidth placeholder="leave a comment" />} />
-                </ListItem>)}
-                {/* ///////////////////// */}
+                {user !== null && (
+                    <>
+                        <Divider variant="inset" component="li" />
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar alt={user.firstName + " " + user.lastName} src={user.picture} />
+                            </ListItemAvatar>
+                            <ListItemText primary={user.firstName + " " + user.lastName} secondary={<Input fullWidth placeholder="leave a comment" />} />
+                            {/* <ListItemButton component={<SendIcon />} /> */}
+                        </ListItem>
+                    </>
+                )}
             </List>
         </Card>
     );

@@ -1,15 +1,21 @@
 .buttonsocial {
    
     margin: 1em 0; 
-    width: 28vw !important;
+    width: 50vw !important;
     height: 7vh;
+    justify-content: center;
+    
     
 
 }
 
-.my-facebook-button-class {
+
+
+/* .my-facebook-button-class {
    
-}
+} */
+
+
 
 .link_b {
     text-decoration: none !important;

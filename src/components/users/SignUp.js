@@ -69,7 +69,7 @@ function SignUp(props) {
                 >
                     <Box sx={{ m: 3, display: 'flex', alignItems: 'center', flexDirection: 'column' }} component="form" noValidate onSubmit={handleSubmit}>
                         <Countries onChange={event => setHideForm(event.target.value.trim() === '')} />
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <Avatar sx={{ m: 1, bgcolor: 'blue' }}>
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
@@ -160,8 +160,8 @@ function SignUp(props) {
                             </>
                         )}
                         <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link style={{ textDecoration: 'none' }} to="/signIn" variant="body2">
+                            <Grid item style={{ margin: 'auto' }}>
+                                <Link style={{ color: 'black', textAlign: 'center', display: 'flex' }} to="/signIn" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>

@@ -16,14 +16,15 @@ const citiesAction = {
             const responseCity = await api.fetchCity(id);
             if (responseCity.data.success) {
                 const city = responseCity.data.content.city;
-                city.itineraries = [];
                 if (loadItineraries) {
+                    city.itineraries = [];
                     const responseItineraries = await api.fetchItineraries({ city: id });
                     if (responseItineraries.data.success) {
                         city.itineraries = responseItineraries.data.content.itineraries;
                         //------------ACTIVITIES FOREACH ITINERARY----------/////
                         if (loadActivities) {
                             city.itineraries.forEach(async (itinerary) => {
+                                itinerary.activities = [];
                                 const responseActivities = await api.fetchActivities({ itinerary: itinerary._id });
                                 if (responseActivities.data.success) {
                                     itinerary.activities = responseActivities.data.content.activities;
