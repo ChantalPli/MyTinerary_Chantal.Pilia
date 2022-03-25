@@ -10,3 +10,4 @@ const activitySchema = new mongoose.Schema({
 const Activity = mongoose.model('Activity', activitySchema, 'Activity');
 
 module.exports = Activity;
+

@@ -1,3 +1,5 @@
+//////QUESTO NON LO USIAMO/////
+
 const mongoose = require('mongoose');
 // const itineraries = mongoose.model('itineraries');
 

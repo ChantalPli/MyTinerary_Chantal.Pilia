@@ -36,14 +36,6 @@ export default function InsetDividers() {
                 <ListItemText primary="Work" secondary="Jan 7, 2014" />
             </ListItem>
             <Divider variant="inset" component="li" />
-            <ListItem>
-                <ListItemAvatar>
-                    <Avatar>
-                        <BeachAccessIcon />
-                    </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Vacation" secondary="July 20, 2014" />
-            </ListItem>
         </List>
     );
 }

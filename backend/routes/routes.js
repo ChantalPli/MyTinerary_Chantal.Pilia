@@ -6,6 +6,7 @@ const cityController = require('../controllers/cityController');
 const itineraryController = require('../controllers/itineraryController');
 const activityController = require('../controllers/activityController');
 const userControllers = require('../controllers/userControllers');
+const commentControllers = require('../controllers/commentControllers');
 
 const {
     fetchCities,
@@ -21,12 +22,14 @@ Router.route('/cities').post(insertCity);
 Router.route('/cities/:id').put(modifyCity);
 Router.route('/cities/:id').delete(deleteCity);
 
+
 const {
     fetchItineraries,
     fetchItinerary,
     insertItinerary,
     modifyItinerary,
     deleteItinerary,
+    likeDislike,
 } = itineraryController;
 
 Router.route('/itineraries').get(fetchItineraries);
@@ -63,5 +66,23 @@ Router.route('/verify/:uniqueString') //RECIBE EL LINK DE USUARIO
 
 Router.route('/auth/signInToken')
     .get(passport.authenticate('jwt', { session: false }), verificarToken)
+
+
+
+const { addComment, modifyComment, deleteComment } = commentControllers;
+
+////////PLACES ROUTES/////////
+Router.route('/itineraries/comment')
+    .post(passport.authenticate('jwt', { session: false }), addComment)
+    .put(passport.authenticate('jwt', { session: false }), modifyComment)
+
+Router.route('/itineraries/comment/:id')
+    .post(passport.authenticate('jwt', { session: false }), deleteComment)
+////////////
+
+/////LIKE/////
+Router.route("/itineraries/like/:id")
+    .put(passport.authenticate("jwt", { session: false }), likeDislike)
+///////
 
 module.exports = Router;

@@ -51,7 +51,7 @@ const usersControllers = {
         const { uniqueString } = req.params; //EXTRAE EL EL STRING UNICO DEL LINK
 
         const user = await User.findOne({ uniqueString: uniqueString })
-        console.log(user) //BUSCA AL USUARIO CORRESPONDIENTE AL LINK
+        //console.log(user) //BUSCA AL USUARIO CORRESPONDIENTE AL LINK
         if (user) {
             user.emailVerified = true //COLOCA EL CAMPO emailVerified en true
             await user.save()
@@ -149,7 +149,7 @@ const usersControllers = {
     signInUser: async (req, res) => {
 
         const { email, password, from } = req.body.loggedUser
-        console.log(req.body)
+        //console.log(req.body)
         try { //busca si el usuario existe, lo busca por email
             const usuarioExiste = await User.findOne({ email }) // busca email en base de dque coincida con el email que se acaba de enviar 
             // const indexpass = usuarioExiste.from.indexOf(from)
@@ -252,7 +252,7 @@ const usersControllers = {
     },
     //////per mantenere la sessione 
     verificarToken: (req, res) => {
-        console.log(req.user)
+        //console.log(req.user)
         if (!req.err) {
             res.json({
                 success: true,

@@ -11,10 +11,8 @@ module.exports = passport.use(new jwtStrategy({
     //si encuentra el usuario dentro de la bd me devuelve el usuario al front. de lo contrario me devuelve un errorgx
     secretOrKey: process.env.SECRET_KEY
 }, (jwt_payload, done) => {
-    console.log(jwt_payload)
     User.findOne({ _id: jwt_payload.id })
         .then(user => {
-            console.log(user)
             if (user) {
                 return done(null, user)
             }

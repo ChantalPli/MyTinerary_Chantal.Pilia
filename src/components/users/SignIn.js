@@ -39,7 +39,9 @@ function SignIn(props) {
 
         <ThemeProvider theme={theme}>
 
-            <HeroImage image={api.url + "/images/Italy.form1.jpg"}></HeroImage>
+            <HeroImage image={api.url + "/images/sardegna2.jpg"}>
+                <h1>SIGN IN </h1>
+            </HeroImage>
 
             <Container component="main" maxWidth="xs">
 

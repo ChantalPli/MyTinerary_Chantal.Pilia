@@ -8,20 +8,29 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
+import { blue, green, red, } from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './styles/Itinerary.css'
 import { Link } from "react-router-dom"
-import { Button } from '@mui/material';
+import { Button, TextField, Input } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { CenterFocusStrong, WatchLater } from "@mui/icons-material";
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { withWidth } from "@material-ui/core";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import Divider from '@mui/material/Divider';
+import { connect } from 'react-redux';
+
 
 
 const ExpandMore = styled((props) => {
@@ -35,17 +44,22 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function Itinerary(props) {
+function Itinerary(props) {
     const [expanded, setExpanded] = React.useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+    const {
+        user,
+        data: itinerary,
+    } = props;
+
     return (
         <Card className="itinerary" sx={{ maxWidth: 950 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        <img width={40} alt={props.data.name} src={api.url + props.data.avatar} />
+                        <img width={40} alt={itinerary.name} src={api.url + itinerary.avatar} />
                     </Avatar>
                 }
                 // action={
@@ -53,31 +67,32 @@ export default function Itinerary(props) {
                 //         <MoreVertIcon />
                 //     </IconButton>
                 // }
-                title={props.data.title}
-                subheader={'By ' + props.data.name}
+                title={itinerary.title}
+                subheader={'By ' + itinerary.name}
             />
             <CardMedia
                 component="img"
                 height="350"
-                image={api.url + props.data.image}
-                alt={props.data.title}
+                image={api.url + itinerary.image}
+                alt={itinerary.title}
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    {props.data.description}
+                    {itinerary.description}
                     <div className="details">
-                        <Chip label={props.data.duration + " hours"} icon={<WatchLater />} />
-                        {props.data.hashtags.map(hashtag => <Link to={hashtag}>{hashtag}</Link>)}
+                        <Chip label={itinerary.duration + " hours"} icon={<WatchLater />} />
+                        {itinerary.hashtags.map(hashtag => <Link to={hashtag}>{hashtag}</Link>)}
                     </div>
                     <div style={{ fontWeight: 'bold', lineHeight: '36px' }}>Price:</div>
-                    <div>{Array.from({ length: props.data.price }, () => <LocalAtmIcon />)}</div>
+                    <div>{Array.from({ length: itinerary.price }, () => <LocalAtmIcon />)}</div>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <ThumbUpIcon />
+
+                <IconButton onClick={props.onLike} aria-label="add to favorites">
+                    <ThumbUpIcon sx={{ color: itinerary.likes.includes(props.user.id) ? blue[500] : 'inherit' }} />
                 </IconButton>
-                {props.data.likes}
+                {itinerary.likes.length}
                 {/* <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton> */}
@@ -86,6 +101,7 @@ export default function Itinerary(props) {
                         <Button size="small" color="primary">
                             Back to Home
                         </Button>
+
                     </Link>
                     <Link style={{ textDecoration: 'none' }} to="/cities">
                         <Button size="small" color="primary">
@@ -104,7 +120,8 @@ export default function Itinerary(props) {
             </CardActions>
             <Collapse className="collapse" in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    {props.data.activities.length === 0 ? (<h5>No Activities</h5>) : (<Box
+                    {/* ////PARTE DELLE ATTIVITÁ///// */}
+                    {itinerary.activities.length === 0 ? (<h5>No Activities</h5>) : (<Box
                         sx={{
                             display: 'flex',
                             flexWrap: 'no-wrap',
@@ -116,7 +133,7 @@ export default function Itinerary(props) {
                             },
                         }}
                     >
-                        {props.data.activities.map(activity => <Paper sx={{ overflow: "hidden", position: "relative" }} key={activity._id} elevation={3}>
+                        {itinerary.activities.map(activity => <Paper sx={{ overflow: "hidden", position: "relative" }} key={activity._id} elevation={3}>
                             <img style={{ maxWidth: "100%" }} src={api.url + activity.image} />
                             <span style={{
                                 position: "absolute",
@@ -133,6 +150,37 @@ export default function Itinerary(props) {
                     </Box>)}
                 </CardContent>
             </Collapse>
+            <List
+                sx={{
+                    width: '100%',
+                    //maxWidth: 360,
+                    bgcolor: 'background.paper',
+                }}
+            >
+                {/* //////////////////// */}
+                {
+                    itinerary.comments.length > 0 && itinerary.comments.map(comment =>
+                        <>
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar alt={comment.user.firstName + " " + comment.user.lastName} src={comment.user.picture} />
+                                </ListItemAvatar>
+                                <ListItemText primary={comment.user.firstName + " " + comment.user.lastName} secondary={comment.comment} />
+                            </ListItem>
+                            <Divider variant="inset" component="li" />
+                        </>
+                    )
+                }
+                {user !== null && (<ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt={user.firstName + " " + user.lastName} src={user.picture} />
+                    </ListItemAvatar>
+                    <ListItemText primary={user.firstName + " " + user.lastName} secondary={<Input fullWidth placeholder="leave a comment" />} />
+                </ListItem>)}
+                {/* ///////////////////// */}
+            </List>
         </Card>
     );
 }
+
+export default connect(state => state.userReducer, null)(Itinerary);

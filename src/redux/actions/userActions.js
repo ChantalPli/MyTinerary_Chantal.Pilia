@@ -1,6 +1,7 @@
 import { ContentPasteSearchOutlined } from '@mui/icons-material'
 import axios from 'axios'
 
+
 import { url } from '../../api'
 
 const userActions = {
@@ -85,8 +86,6 @@ const userActions = {
             });
         }
     }
-
-
 }
 
 export default userActions;

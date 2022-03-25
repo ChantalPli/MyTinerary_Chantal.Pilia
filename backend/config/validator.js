@@ -23,7 +23,6 @@ const validator = (req, res, next) => {
         from: joi.string()
     })
     const validation = schema.validate(req.body.userData, { abortEarly: false })
-    console.log(validation.error)
     if (validation.error) {
         return res.json({ success: false, message: validation.error.details })
     }

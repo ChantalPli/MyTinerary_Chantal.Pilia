@@ -63,6 +63,20 @@ const citiesReducer = (state = initialState, action) => {
                 filteredCities,
             }
         }
+        case 'likeDislike': {
+            // make a copy of city.
+
+            const city = JSON.parse(JSON.stringify(state.city));
+            const itinerary = city.itineraries.find(itinerary => itinerary._id === action.payload.itineraryId);
+            if (itinerary) {
+                itinerary.likes = action.payload.likes;
+            }
+
+            return {
+                ...state,
+                city,
+            }
+        }
         default:
             // throw new Error("Unknown action");
             return state;

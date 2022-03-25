@@ -1,79 +1,51 @@
 const Itinerary = require("../models/Itinerary")
 
 
-///////bisogna vedere se si può!/////
-const commentControllers = {
+const commentsControllers = {
+
     addComment: async (req, res) => {
+        const { itinerary, comment } = req.body
+        const user = req.user._id
+        console.log(comment)
         try {
-            const userId = req.user._id
-            const itineraryId = req.params.itineraryId
-            const content = req.body.content
-            const newComment = {
-                userId,
-                content,
-                itineraryId,
-            }
-            const updatedItinerary = await Itinerary.findOneAndUpdate(
-                { _id: itineraryId },
-                { $push: { comments: newComment } },
-                { new: true }
-            ).populate("comments.userId", 'firstName lastName photoURL _id email"')
-            const lastComment =
-                updatedItinerary.comments[updatedItinerary.comments.length - 1]
-            res.json({
-                success: true,
-                response: {
-                    _id: lastComment._id,
-                    itineraryId: updatedItinerary._id,
-                    content: lastComment.content,
-                    userId: lastComment.userId,
-                },
-                error: null,
-            })
-        } catch (e) {
-            res.json({ success: false, response: null, error: e.message })
+            const nuevoComment = await Itinerary.findOneAndUpdate({ _id: itinerary }, { $push: { comments: { comment, user } } }, { new: true }).populate("comments.user", { firstName: 1, lastName: 1, picture: 1 })
+            res.json({ success: true, response: { nuevoComment }, message: "gracias por dejarnos tu comentario" })
         }
+        catch (error) {
+            console.log(error)
+            res.json({ success: false, message: "Algo ha salido mal intentalo en unos minutos" })
+        }
+    },
+    modifyComment: async (req, res) => {
+        const { commentID, comment } = req.body.comment
+        const user = req.user._id
+        try {
+            const newComment = await Itinerary.findOneAndUpdate({ "comments._id": commentID }, { $set: { "comments.$.comment": comment } }, { new: true })
+
+            res.json({ success: true, response: { newComment }, message: "tu comentario ha sido modificado" })
+
+        }
+        catch (error) {
+            console.log(error)
+            res.json({ success: true, message: "Algo ha salido mal intentalo en unos minutos" })
+        }
+
     },
     deleteComment: async (req, res) => {
+        const id = req.params.id
+        const user = req.user._id
         try {
-            const removedComment = await Itinerary.findByIdAndUpdate(
-                { _id: req.body.itineraryId },
-                { $pull: { comments: { _id: req.params.commentId } } },
-                { new: true }
-            )
-            res.json({
-                success: true,
-                response: removedComment.comments[removedComment.comments.length - 1],
-                error: null,
-            })
-        } catch (e) {
-            res.json({ success: false, response: null, error: e.message })
-        }
-    },
-    fetchComments: async (req, res) => {
-        try {
-            const { itineraryId } = req.params
-            const itinerary = await Itinerary.findOne({ _id: itineraryId }).populate(
-                "comments.userId",
-                "firstName lastName photoURL _id email"
-            )
-            res.json({ success: true, response: itinerary.comments, error: null })
-        } catch (e) {
-            res.json({ success: false, response: null, error: e.message })
-        }
-    },
-    updateComment: async (req, res) => {
-        try {
-            const { content } = req.body
-            const itinerary = await Itinerary.findOneAndUpdate(
-                { "comments._id": req.params.commentId },
-                { $set: { "comments.$.content": content } },
-                { new: true }
-            )
-            res.json({ success: true, response: itinerary.comments, error: null })
-        } catch (e) {
-            res.json({ success: false, response: null, error: e.message })
-        }
-    },
-}
+            const deleteComment = await Itinerary.findOneAndUpdate({ "comments._id": id }, { $pull: { comments: { _id: id } } }, { new: true })
 
+            res.json({ success: true, response: { deleteComment }, message: "has eliminado el comentario" })
+
+        }
+        catch (error) {
+            console.log(error)
+            res.json({ success: false, message: "Algo ha salido mal intentalo en unos minutos" })
+        }
+
+    },
+
+}
+module.exports = commentsControllers

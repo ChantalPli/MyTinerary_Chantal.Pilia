@@ -52,7 +52,9 @@ function SignUp(props) {
         window.location.href = '/';
     return props.user ? (<h1 className='message'>Redirecting...</h1>) : (
         <ThemeProvider theme={theme}>
-            <HeroImage image={api.url + "/images/Italy.form2.jpg"} ></HeroImage>
+            <HeroImage image={api.url + "/images/sardegna5.jpg"} >
+                <h1>SIGN UP</h1>
+            </HeroImage>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
