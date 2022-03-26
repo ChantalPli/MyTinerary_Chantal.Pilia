@@ -64,14 +64,22 @@ const citiesReducer = (state = initialState, action) => {
             }
         }
         case 'likeDislike': {
-            // make a copy of city.
-
             const city = JSON.parse(JSON.stringify(state.city));
             const itinerary = city.itineraries.find(itinerary => itinerary._id === action.payload.itineraryId);
             if (itinerary) {
                 itinerary.likes = action.payload.likes;
             }
-
+            return {
+                ...state,
+                city,
+            }
+        }
+        case 'comment': {
+            const city = JSON.parse(JSON.stringify(state.city));
+            const itinerary = city.itineraries.find(itinerary => itinerary._id === action.payload.itinerary);
+            if (itinerary) {
+                itinerary.comments = action.payload.comments;
+            }
             return {
                 ...state,
                 city,

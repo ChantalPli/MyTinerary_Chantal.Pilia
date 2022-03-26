@@ -60,7 +60,43 @@ const citiesAction = {
             } catch (error) {
             }
         }
+    },
+
+    addComment: (itinerary, comment) => {
+        const token = localStorage.getItem('token')
+        return async (dispatch, getState) => {
+            try {
+                let response = await axios.post(`${api.url}/api/itineraries/comment`, { itinerary, comment },
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token
+                        }
+                    })
+                if (response.data.success) {
+                    dispatch({ type: "comment", payload: { itinerary, comments: response.data.response } })
+                }
+            } catch (error) {
+            }
+        }
+    },
+    deleteComment: (itinerary, comment) => {
+        const token = localStorage.getItem('token')
+        return async (dispatch, getState) => {
+            try {
+                let response = await axios.post(`${api.url}/api/itineraries/comment/${comment}`, {},
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token
+                        }
+                    })
+                if (response.data.success) {
+                    dispatch({ type: "comment", payload: { itinerary, comments: response.data.response } })
+                }
+            } catch (error) {
+            }
+        }
     }
+
 };
 
 export default citiesAction;

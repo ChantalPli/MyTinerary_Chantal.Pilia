@@ -30,6 +30,13 @@ import { connect } from 'react-redux';
 import ModeIcon from '@mui/icons-material/Mode';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
+import citiesAction from "../redux/actions/citiesAction";
+import { useState } from "react";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 const ExpandMore = styled((props) => {
@@ -48,11 +55,23 @@ function Itinerary(props) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     const {
         user,
         data: itinerary,
+        onLike,
+        onComment,
+        onDeleteComment,
     } = props;
-
+    const [comment, setComment] = useState('');
     return (
         <Card className="itinerary" sx={{ maxWidth: 1000 }}>
             <CardHeader
@@ -87,8 +106,13 @@ function Itinerary(props) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-
-                <IconButton onClick={props.onLike} aria-label="add to favorites">
+                <IconButton onClick={() => {
+                    if (user === null) {
+                        handleClickOpen();
+                    } else {
+                        onLike(itinerary._id);
+                    }
+                }} aria-label="add to favorites">
                     <ThumbUpIcon sx={{ color: user !== null && itinerary.likes.includes(user.id) ? blue[500] : 'inherit' }} />
                 </IconButton>
                 {itinerary.likes.length}
@@ -100,7 +124,6 @@ function Itinerary(props) {
                         <Button size="small" color="primary">
                             Back to Home
                         </Button>
-
                     </Link>
                     <Link style={{ textDecoration: 'none' }} to="/cities">
                         <Button size="small" color="primary">
@@ -160,35 +183,100 @@ function Itinerary(props) {
                     itinerary.comments.length > 0 && itinerary.comments.map(comment =>
                         <div key={comment._id}>
                             <Divider variant="inset" component="li" />
-                            <ListItem>
+                            <ListItem
+                                secondaryAction={
+                                    user && user.id === comment.user._id && (
+                                        <>
+                                            <IconButton edge="end" aria-label="edit">
+                                                <ModeIcon />
+                                            </IconButton>
+                                            <IconButton onClick={() => {
+                                                if (window.confirm("Do you want to delete this comment?"))
+                                                    onDeleteComment(itinerary._id, comment._id);
+                                            }} edge="end" aria-label="delete">
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </>
+                                    )
+                                }
+                            >
                                 <ListItemAvatar>
                                     <Avatar alt={comment.user.firstName + " " + comment.user.lastName} src={comment.user.picture} />
                                 </ListItemAvatar>
                                 <ListItemText primary={comment.user.firstName + " " + comment.user.lastName} secondary={comment.comment} />
-                                {user && user.id === comment.user._id && (
-                                    <>
-                                        {/* <ListItemButton component={<ModeIcon />} />
-                                        <ListItemButton component={<DeleteIcon />} /> */}
-                                    </>
-                                )}
                             </ListItem>
                         </div>
                     )
                 }
-                {user !== null && (
-                    <>
-                        <Divider variant="inset" component="li" />
-                        <ListItem>
-                            <ListItemAvatar>
-                                <Avatar alt={user.firstName + " " + user.lastName} src={user.picture} />
-                            </ListItemAvatar>
-                            <ListItemText primary={user.firstName + " " + user.lastName} secondary={<Input fullWidth placeholder="leave a comment" />} />
-                            {/* <ListItemButton component={<SendIcon />} /> */}
-                        </ListItem>
-                    </>
-                )}
-            </List>
-        </Card>
+                <Divider variant="inset" component="li" />
+                <ListItem
+                    secondaryAction={
+                        <IconButton onClick={() => {
+                            if (user === null) {
+                                handleClickOpen();
+                            } else if (comment !== '') {
+                                onComment(itinerary._id, comment); //citiesAction.addComment
+                                setComment('');
+                            }
+                        }} edge="end" aria-label="send">
+                            <SendIcon />
+                        </IconButton>
+                    }
+                >
+                    <ListItemAvatar>
+                        <Avatar alt={user ? user.firstName + " " + user.lastName : null} src={user?.picture} />
+                    </ListItemAvatar>
+                    <ListItemText primary={user ? user.firstName + " " + user.lastName : null} secondary={
+                        <Input
+                            fullWidth
+                            placeholder="Leave a comment..."
+                            value={comment}
+                            onChange={event => setComment(event.target.value)}
+                            onKeyUp={event => {
+                                if (event.key === 'Enter') {
+                                    if (user === null) {
+                                        handleClickOpen();
+                                    } else if (comment !== '') {
+                                        onComment(itinerary._id, comment); //citiesAction.addComment
+                                        setComment('');
+                                    }
+                                } else {
+                                    setComment(event.target.value.trim());
+                                }
+                            }} />
+                    } />
+                </ListItem>
+            </List >
+
+
+
+
+
+
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Use Google's location service?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Let Google help apps determine location. This means sending anonymous
+                        location data to Google, even when no apps are running.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleClose} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </Card >
     );
 }
 
