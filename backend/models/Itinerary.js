@@ -21,7 +21,6 @@ const itinerarySchema = new mongoose.Schema({
     }],
     likes: { type: Array, required: true }, //se puede poner set?para no repetir los elementos,para que el user solo pueda hacer like una vez; 
     /////
-
 });
 
 const Itinerary = mongoose.model('Itinerary', itinerarySchema, 'Itinerary');

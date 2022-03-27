@@ -39,13 +39,13 @@ const itineraryController = {
 
     /////////PARTE DE LOS CONTROLADORES DE LIKE Y DISLIKE///////
     likeDislike: async (req, res) => {
-        const id = req.params.id //LLEGA POR PARAMETRO DESDE AXIOS// id dell'itinerario dove vogliamo aggiungere o togliere il like 
+        const id = req.params.id //LLEGA POR PARAMETRO a traves de AXIOS// id dell'itinerario dove vogliamo aggiungere o togliere il like 
         const user = req.user.id //LLEGA POR RESPUESTA DE PASSPORT// dato del id del usuario 
 
-        await Itinerary.findOne({ _id: id })
+        await Itinerary.findOne({ _id: id }) ///id de itinerario
 
             .then((itinerary) => {
-                if (itinerary.likes.includes(user)) { // de ese itinerario que encontramos vamos a buscar la propiedad likes y si esa incluye el usuario
+                if (itinerary.likes.includes(user)) { // de ese itinerario que encontramos vamos a buscar la propiedad likes y si esta incluye el usuario
                     Itinerary.findOneAndUpdate({ _id: id }, { $pull: { likes: user } }, { new: true })//
                         .then((response) => res.json({ success: true, response: response.likes }))
                         .catch((error) => console.log(error))

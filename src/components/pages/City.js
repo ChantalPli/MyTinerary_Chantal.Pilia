@@ -2,13 +2,9 @@ import HeroImage from "../HeroImage";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import api from '../../api';
-// import UnderConstruction from "../UnderConstruction";
 import Itinerary from "../Itinerary";
-
 import { connect, } from 'react-redux';
 import citiesAction from '../../redux/actions/citiesAction';
-
-
 import '../styles/City.css';
 
 function City(props) {
@@ -30,6 +26,7 @@ function City(props) {
         likeDislike,
         addComment,
         deleteComment,
+        modifyComment,
     } = props;
     // const dispatch = useDispatch();
     useEffect(() => {
@@ -46,7 +43,15 @@ function City(props) {
                     </HeroImage>
                     {
                         city.itineraries.length === 0 ? (<h1 className="message">We are sorry! We don't have any itineraries for this city at the moment!</h1>) :
-                            city.itineraries.map(itinerary => <Itinerary onLike={likeDislike} onComment={addComment} onDeleteComment={deleteComment} key={itinerary._id} data={itinerary} />)
+                            city.itineraries.map(itinerary =>
+                                <Itinerary
+                                    onLike={likeDislike}
+                                    onComment={addComment}
+                                    onEditComment={modifyComment}
+                                    onDeleteComment={deleteComment}
+                                    key={itinerary._id}
+                                    data={itinerary} />
+                            )
                     }
                     {/* <UnderConstruction title={city.name} image={city.image}>
                         Under construction

@@ -23,6 +23,7 @@ Router.route('/cities/:id').put(modifyCity);
 Router.route('/cities/:id').delete(deleteCity);
 
 
+
 const {
     fetchItineraries,
     fetchItinerary,
@@ -31,6 +32,21 @@ const {
     deleteItinerary,
     likeDislike,
 } = itineraryController;
+const { addComment, modifyComment, deleteComment } = commentControllers;
+
+////////PLACES ROUTES/////////
+Router.route('/itineraries/comment')
+    .post(passport.authenticate('jwt', { session: false }), addComment)
+    .put(passport.authenticate('jwt', { session: false }), modifyComment)
+
+Router.route('/itineraries/comment/:id')
+    .post(passport.authenticate('jwt', { session: false }), deleteComment)
+////////////
+
+/////LIKE/////
+Router.route("/itineraries/like/:id")
+    .put(passport.authenticate("jwt", { session: false }), likeDislike)
+///////
 
 Router.route('/itineraries').get(fetchItineraries);
 Router.route('/itineraries/:id').get(fetchItinerary);
@@ -68,21 +84,5 @@ Router.route('/auth/signInToken')
     .get(passport.authenticate('jwt', { session: false }), verificarToken)
 
 
-
-const { addComment, modifyComment, deleteComment } = commentControllers;
-
-////////PLACES ROUTES/////////
-Router.route('/itineraries/comment')
-    .post(passport.authenticate('jwt', { session: false }), addComment)
-    .put(passport.authenticate('jwt', { session: false }), modifyComment)
-
-Router.route('/itineraries/comment/:id')
-    .post(passport.authenticate('jwt', { session: false }), deleteComment)
-////////////
-
-/////LIKE/////
-Router.route("/itineraries/like/:id")
-    .put(passport.authenticate("jwt", { session: false }), likeDislike)
-///////
 
 module.exports = Router;

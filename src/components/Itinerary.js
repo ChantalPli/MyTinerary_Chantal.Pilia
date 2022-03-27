@@ -30,7 +30,6 @@ import { connect } from 'react-redux';
 import ModeIcon from '@mui/icons-material/Mode';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
-import citiesAction from "../redux/actions/citiesAction";
 import { useState } from "react";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -55,23 +54,43 @@ function Itinerary(props) {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const [alertDialogOpened, setAlertDialogOpened] = React.useState(false); //per aprire e chiudere il dialogo de alerta
+    const handleAlertOpen = () => {
+        setAlertDialogOpened(true);
+    };
+    const handleAlertClose = () => {
+        setAlertDialogOpened(false);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const [confirmDialogOpened, setConfirmDialogOpened] = React.useState(null);// dialogo per confirmare se si vuiole eliminare il comment
+    const handleConfirmOpen = (commentID) => {
+        setConfirmDialogOpened(commentID);
     };
+    const handleConfirmClose = () => {
+        setConfirmDialogOpened(null);
+    };
+
+    const [newComment, setNewComment] = useState('');
+    const [editedComment, setEditedComment] = useState('');
+
+    const [editMode, setEditMode] = React.useState(null);
+    const handleEditModeEnable = (comment) => {
+        setEditMode(comment._id);
+        setEditedComment(comment.comment);
+    };
+    const handleEditModeDisable = () => {
+        setEditMode(null);
+    };
+
     const {
         user,
         data: itinerary,
         onLike,
         onComment,
+        onEditComment,
         onDeleteComment,
     } = props;
-    const [comment, setComment] = useState('');
     return (
         <Card className="itinerary" sx={{ maxWidth: 1000 }}>
             <CardHeader
@@ -108,7 +127,7 @@ function Itinerary(props) {
             <CardActions disableSpacing>
                 <IconButton onClick={() => {
                     if (user === null) {
-                        handleClickOpen();
+                        handleAlertOpen();
                     } else {
                         onLike(itinerary._id);
                     }
@@ -116,9 +135,6 @@ function Itinerary(props) {
                     <ThumbUpIcon sx={{ color: user !== null && itinerary.likes.includes(user.id) ? blue[500] : 'inherit' }} />
                 </IconButton>
                 {itinerary.likes.length}
-                {/* <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton> */}
                 <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Link style={{ textDecoration: 'none' }} to="/home">
                         <Button size="small" color="primary">
@@ -151,131 +167,188 @@ function Itinerary(props) {
                                 m: 1,
                                 width: 300,
                                 height: 300,
-                                //backgroundImage: 
                             },
                         }}
                     >
-                        {itinerary.activities.map(activity => <Paper sx={{ overflow: "hidden", position: "relative" }} key={activity._id} elevation={3}>
-                            <img style={{ display: "block", objectFit: "cover", height: "100%", width: "100%" }} src={api.url + activity.image} />
-                            <span style={{
-                                position: "absolute",
-                                backgroundColor: "rgba(0, 0, 0, .75)",
-                                borderRadius: 4,
-                                left: 8,
-                                right: 8,
-                                bottom: 8,
-                                padding: 8,
-                                textAlign: "center",
-                                color: "white",
-                            }}>{activity.name}</span>
-                        </Paper>)}
+                        {itinerary.activities.map(activity =>
+                            <Paper
+                                sx={{
+                                    overflow: "hidden",
+                                    position: "relative"
+                                }}
+                                key={activity._id}
+                                elevation={3}
+                            >
+                                <img style={{ display: "block", objectFit: "cover", height: "100%", width: "100%" }} src={api.url + activity.image} />
+                                <span style={{
+                                    position: "absolute",
+                                    backgroundColor: "rgba(0, 0, 0, .75)",
+                                    borderRadius: 4,
+                                    left: 8,
+                                    right: 8,
+                                    bottom: 8,
+                                    padding: 8,
+                                    textAlign: "center",
+                                    color: "white",
+                                }}>
+                                    {activity.name}
+                                </span>
+                            </Paper>)}
                     </Box>)}
                 </CardContent>
-            </Collapse>
-            <List
-                sx={{
-                    width: '100%',
-                    //maxWidth: 360,
-                    bgcolor: 'background.paper',
-                }}
-            >
-                {
-                    itinerary.comments.length > 0 && itinerary.comments.map(comment =>
-                        <div key={comment._id}>
-                            <Divider variant="inset" component="li" />
-                            <ListItem
-                                secondaryAction={
-                                    user && user.id === comment.user._id && (
-                                        <>
-                                            <IconButton edge="end" aria-label="edit">
-                                                <ModeIcon />
-                                            </IconButton>
-                                            <IconButton onClick={() => {
-                                                if (window.confirm("Do you want to delete this comment?"))
-                                                    onDeleteComment(itinerary._id, comment._id);
-                                            }} edge="end" aria-label="delete">
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </>
-                                    )
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar alt={comment.user.firstName + " " + comment.user.lastName} src={comment.user.picture} />
-                                </ListItemAvatar>
-                                <ListItemText primary={comment.user.firstName + " " + comment.user.lastName} secondary={comment.comment} />
-                            </ListItem>
-                        </div>
-                    )
-                }
-                <Divider variant="inset" component="li" />
-                <ListItem
-                    secondaryAction={
-                        <IconButton onClick={() => {
-                            if (user === null) {
-                                handleClickOpen();
-                            } else if (comment !== '') {
-                                onComment(itinerary._id, comment); //citiesAction.addComment
-                                setComment('');
-                            }
-                        }} edge="end" aria-label="send">
-                            <SendIcon />
-                        </IconButton>
-                    }
+                <List
+                    sx={{
+                        width: '100%',
+                        //maxWidth: 360,
+                        bgcolor: 'background.paper',
+                    }}
                 >
-                    <ListItemAvatar>
-                        <Avatar alt={user ? user.firstName + " " + user.lastName : null} src={user?.picture} />
-                    </ListItemAvatar>
-                    <ListItemText primary={user ? user.firstName + " " + user.lastName : null} secondary={
-                        <Input
-                            fullWidth
-                            placeholder="Leave a comment..."
-                            value={comment}
-                            onChange={event => setComment(event.target.value)}
-                            onKeyUp={event => {
-                                if (event.key === 'Enter') {
-                                    if (user === null) {
-                                        handleClickOpen();
-                                    } else if (comment !== '') {
-                                        onComment(itinerary._id, comment); //citiesAction.addComment
-                                        setComment('');
+                    {
+                        itinerary.comments.length > 0 && itinerary.comments.map(comment =>
+                            <div key={comment._id}>
+                                <Divider variant="inset" component="li" />
+                                <ListItem
+                                    secondaryAction={
+                                        user && user.id === comment.user._id && (
+                                            editMode === comment._id ? (
+                                                <IconButton onClick={() => {
+                                                    if (editedComment.trim() !== '') {
+                                                        onEditComment(itinerary._id, comment._id, editedComment); //citiesAction.addComment
+                                                        handleEditModeDisable();
+                                                    }
+                                                }} edge="end" aria-label="send">
+                                                    <SendIcon />
+                                                </IconButton>
+                                            ) : (
+                                                <>
+                                                    <IconButton onClick={() => handleEditModeEnable(comment)} edge="end" aria-label="edit">
+                                                        <ModeIcon />
+                                                    </IconButton>
+                                                    <IconButton onClick={() => handleConfirmOpen(comment._id)} edge="end" aria-label="delete">
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </>
+                                            )
+                                        )
                                     }
-                                } else {
-                                    setComment(event.target.value.trim());
+                                >
+                                    <ListItemAvatar>
+                                        <Avatar alt={comment.user.firstName + " " + comment.user.lastName} src={comment.user.picture} />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={comment.user.firstName + " " + comment.user.lastName} secondary={
+                                        editMode === comment._id ? (<Input
+                                            fullWidth
+                                            placeholder="Leave a comment..."
+                                            value={editedComment}
+                                            onChange={event => setEditedComment(event.target.value)}
+                                            onKeyUp={event => {
+                                                if (event.key === 'Enter') {
+                                                    if (editedComment.trim() !== '') {
+                                                        onEditComment(itinerary._id, comment._id, editedComment); //citiesAction.addComment
+                                                        handleEditModeDisable();
+                                                    }
+                                                } else if (event.key === 'Escape') {
+                                                    handleEditModeDisable();
+                                                } else {
+                                                    setEditedComment(event.target.value);
+                                                }
+                                            }} />) : comment.comment
+                                    } />
+                                </ListItem>
+                            </div>
+                        )
+                    }
+                    <Divider variant="inset" component="li" />
+                    <ListItem
+                        secondaryAction={
+                            <IconButton onClick={() => {
+                                if (user === null) {
+                                    handleAlertOpen();
+                                } else if (newComment.trim() !== '') {
+                                    onComment(itinerary._id, newComment); //citiesAction.addComment
+                                    setNewComment('');
                                 }
-                            }} />
-                    } />
-                </ListItem>
-            </List >
-
-
+                            }} edge="end" aria-label="send">
+                                <SendIcon />
+                            </IconButton>
+                        }
+                    >
+                        <ListItemAvatar>
+                            <Avatar alt={user ? user.firstName + " " + user.lastName : null} src={user?.picture} />
+                        </ListItemAvatar>
+                        <ListItemText primary={user ? user.firstName + " " + user.lastName : null} secondary={
+                            <Input
+                                fullWidth
+                                placeholder="Leave a comment..."
+                                value={newComment}
+                                onChange={event => setNewComment(event.target.value)}
+                                onKeyUp={event => {
+                                    if (event.key === 'Enter') {
+                                        if (user === null) {
+                                            handleAlertOpen();
+                                        } else if (newComment.trim() !== '') {
+                                            onComment(itinerary._id, newComment); //citiesAction.addComment
+                                            setNewComment('');
+                                        }
+                                    } else {
+                                        setNewComment(event.target.value);
+                                    }
+                                }} />
+                        } />
+                    </ListItem>
+                </List >
+            </Collapse>
 
 
 
 
 
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={alertDialogOpened}
+                onClose={handleAlertClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
+                    {"Ops, something went wrong!"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
+                        You must be logged in to leave a comment.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
-                    </Button>
+                    <Button onClick={handleAlertClose}>Got It</Button>
                 </DialogActions>
             </Dialog>
+
+
+
+            <Dialog
+                open={confirmDialogOpened !== null}
+                onClose={handleConfirmClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Ops, something went wrong!"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Do you want to remove this comment?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        onDeleteComment(itinerary._id, confirmDialogOpened);
+                        handleConfirmClose();
+                    }} autoFocus>
+                        Yes
+                    </Button>
+                    <Button onClick={handleConfirmClose}>No</Button>
+                </DialogActions>
+            </Dialog>
+
         </Card >
     );
 }
