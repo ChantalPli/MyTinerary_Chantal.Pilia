@@ -36,6 +36,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import itineraryActions from '../redux/actions/itineraryActions'
 
 
 const ExpandMore = styled((props) => {
@@ -86,10 +87,10 @@ function Itinerary(props) {
     const {
         user,
         data: itinerary,
-        onLike,
-        onComment,
-        onEditComment,
-        onDeleteComment,
+        likeDislike,
+        addComment,
+        modifyComment,
+        deleteComment,
     } = props;
     return (
         <Card className="itinerary" sx={{ maxWidth: 1000 }}>
@@ -129,7 +130,7 @@ function Itinerary(props) {
                     if (user === null) {
                         handleAlertOpen();
                     } else {
-                        onLike(itinerary._id);
+                        likeDislike(itinerary._id);
                     }
                 }} aria-label="add to favorites">
                     <ThumbUpIcon sx={{ color: user !== null && itinerary.likes.includes(user.id) ? blue[500] : 'inherit' }} />
@@ -213,7 +214,7 @@ function Itinerary(props) {
                                             editMode === comment._id ? (
                                                 <IconButton onClick={() => {
                                                     if (editedComment.trim() !== '') {
-                                                        onEditComment(itinerary._id, comment._id, editedComment); //citiesAction.addComment
+                                                        modifyComment(itinerary._id, comment._id, editedComment); //citiesAction.addComment
                                                         handleEditModeDisable();
                                                     }
                                                 }} edge="end" aria-label="send">
@@ -244,7 +245,7 @@ function Itinerary(props) {
                                             onKeyUp={event => {
                                                 if (event.key === 'Enter') {
                                                     if (editedComment.trim() !== '') {
-                                                        onEditComment(itinerary._id, comment._id, editedComment); //citiesAction.addComment
+                                                        modifyComment(itinerary._id, comment._id, editedComment); //citiesAction.addComment
                                                         handleEditModeDisable();
                                                     }
                                                 } else if (event.key === 'Escape') {
@@ -265,7 +266,7 @@ function Itinerary(props) {
                                 if (user === null) {
                                     handleAlertOpen();
                                 } else if (newComment.trim() !== '') {
-                                    onComment(itinerary._id, newComment); //citiesAction.addComment
+                                    addComment(itinerary._id, newComment); //citiesAction.addComment
                                     setNewComment('');
                                 }
                             }} edge="end" aria-label="send">
@@ -287,7 +288,7 @@ function Itinerary(props) {
                                         if (user === null) {
                                             handleAlertOpen();
                                         } else if (newComment.trim() !== '') {
-                                            onComment(itinerary._id, newComment); //citiesAction.addComment
+                                            addComment(itinerary._id, newComment); //citiesAction.addComment
                                             setNewComment('');
                                         }
                                     } else {
@@ -310,7 +311,7 @@ function Itinerary(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Ops, something went wrong!"}
+                    Ops, something went wrong!
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -331,7 +332,7 @@ function Itinerary(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Ops, something went wrong!"}
+                    Are you sure?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -340,7 +341,7 @@ function Itinerary(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        onDeleteComment(itinerary._id, confirmDialogOpened);
+                        deleteComment(itinerary._id, confirmDialogOpened);
                         handleConfirmClose();
                     }} autoFocus>
                         Yes
@@ -353,4 +354,4 @@ function Itinerary(props) {
     );
 }
 
-export default connect(state => state.userReducer, null)(Itinerary);
+export default connect(state => state.userReducer, itineraryActions)(Itinerary);

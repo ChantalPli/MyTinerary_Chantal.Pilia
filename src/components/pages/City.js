@@ -23,10 +23,6 @@ function City(props) {
         cityReady: ready, // Indica si la lista de ciudades cargó
         city, // Contiene la ciudad a renderizar
         fetchCity, // funcion que obtiene la ciudad a renderizar desde el backend
-        likeDislike,
-        addComment,
-        deleteComment,
-        modifyComment,
     } = props;
     // const dispatch = useDispatch();
     useEffect(() => {
@@ -44,13 +40,7 @@ function City(props) {
                     {
                         city.itineraries.length === 0 ? (<h1 className="message">We are sorry! We don't have any itineraries for this city at the moment!</h1>) :
                             city.itineraries.map(itinerary =>
-                                <Itinerary
-                                    onLike={likeDislike}
-                                    onComment={addComment}
-                                    onEditComment={modifyComment}
-                                    onDeleteComment={deleteComment}
-                                    key={itinerary._id}
-                                    data={itinerary} />
+                                <Itinerary key={itinerary._id} data={itinerary} />
                             )
                     }
                     {/* <UnderConstruction title={city.name} image={city.image}>

@@ -34,7 +34,7 @@ const {
 } = itineraryController;
 const { addComment, modifyComment, deleteComment } = commentControllers;
 
-////////PLACES ROUTES/////////
+////////ITINERARIES ROUTES/////////
 Router.route('/itineraries/comment')
     .post(passport.authenticate('jwt', { session: false }), addComment)
     .put(passport.authenticate('jwt', { session: false }), modifyComment)
