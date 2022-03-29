@@ -10,6 +10,7 @@ const citiesAction = {
         }
     },
 
+
     fetchCity: (id, loadItineraries = false, loadActivities = false) => { // loadActivities si usa quando loadItin es = true//si ponemos activities true y itin es false se ignora activities
         return async (dispatch, getState) => {
             const responseCity = await api.fetchCity(id);

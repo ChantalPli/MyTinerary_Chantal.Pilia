@@ -38,7 +38,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import itineraryActions from '../redux/actions/itineraryActions'
 
-
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -315,7 +314,7 @@ function Itinerary(props) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        You must be logged in to leave a comment.
+                        You must be logged in to leave a comment
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
