@@ -3,7 +3,7 @@ footer {
     gap: 16px;
     grid-template: 56px auto 56px / repeat(2, 1fr);
     height: 40vh;
-    margin: 16px;
+    margin: 16px
 }
 
 footer > section:nth-of-type(1) {
