@@ -17,7 +17,6 @@ import './styles/CustomAppBar.css';
 import { Link } from "react-router-dom";
 import { Avatar } from '@mui/material';
 import { connect } from 'react-redux';
-import { useEffect } from 'react';
 
 
 function CustomAppBar(props) {
