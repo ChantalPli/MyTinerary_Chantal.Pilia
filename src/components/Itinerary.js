@@ -179,7 +179,7 @@ function Itinerary(props) {
                                 key={activity._id}
                                 elevation={3}
                             >
-                                <img style={{ display: "block", objectFit: "cover", height: "100%", width: "100%" }} src={api.url + activity.image} />
+                                <img style={{ display: "block", objectFit: "cover", height: "100%", width: "100%" }} src={api.url + activity.image} alt='img itinerary' />
                                 <span style={{
                                     position: "absolute",
                                     backgroundColor: "rgba(0, 0, 0, .75)",
